@@ -1,21 +1,96 @@
-[gd_scene load_steps=4 format=3 uid="uid://b06278fk4rc7j"]
+[gd_scene load_steps=16 format=3 uid="uid://b06278fk4rc7j"]
 
 [ext_resource type="Script" uid="uid://dqbyb8fwwepuy" path="res://scripts/player.gd" id="1_p0vlq"]
+[ext_resource type="PackedScene" uid="uid://bnib4n75mnlo" path="res://assets/models/bulborbGLB2.glb" id="2_v6fml"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5q5h1"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_3li8b"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_p0vlq"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v6fml"]
+animation = &"Eat"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qu4a1"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3li8b"]
+animation = &"Shake"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mdl7e"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_70d11"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cw2d6"]
+advance_mode = 2
+advance_condition = &"is_walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_khinc"]
+advance_mode = 2
+advance_condition = &"is_shaking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bruh7"]
+advance_mode = 2
+advance_condition = &"is_eating"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6eyey"]
+advance_mode = 2
+advance_condition = &"is_idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d3wef"]
+advance_mode = 2
+advance_condition = &"is_idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o4126"]
+advance_mode = 2
+advance_condition = &"is_idle"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_khinc"]
+states/Eat/node = SubResource("AnimationNodeAnimation_v6fml")
+states/Eat/position = Vector2(420, 213)
+states/Idle/node = SubResource("AnimationNodeAnimation_qu4a1")
+states/Idle/position = Vector2(264, 128)
+states/Shake/node = SubResource("AnimationNodeAnimation_3li8b")
+states/Shake/position = Vector2(420, 37)
+states/Start/position = Vector2(93, 117)
+states/Walk/node = SubResource("AnimationNodeAnimation_mdl7e")
+states/Walk/position = Vector2(428, 117)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_70d11"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_cw2d6"), "Idle", "Shake", SubResource("AnimationNodeStateMachineTransition_khinc"), "Idle", "Eat", SubResource("AnimationNodeStateMachineTransition_bruh7"), "Eat", "Idle", SubResource("AnimationNodeStateMachineTransition_6eyey"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_d3wef"), "Shake", "Idle", SubResource("AnimationNodeStateMachineTransition_o4126")]
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
 script = ExtResource("1_p0vlq")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.96212816, 0)
-shape = SubResource("CapsuleShape3D_5q5h1")
+transform = Transform3D(0.725, 0, 0, 0, 0.725, 0, 0, 0, 0.725, 0, 0.3350759, -0.06961465)
+shape = SubResource("SphereShape3D_3li8b")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.96212816, 0)
-mesh = SubResource("CapsuleMesh_p0vlq")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.9274125, 0.37404016, 0, -0.37404016, 0.9274125, 0, 2.129137, 1.9908998)
+transform = Transform3D(0.29530793, -0.63141847, 0.7170105, 2.8099656e-10, 0.7504803, 0.6608929, -0.95540214, -0.1951669, 0.22162278, 0.6953963, 0.844963, 0.33040708)
+
+[node name="visuals" type="Node3D" parent="."]
+
+[node name="bulborbGLB2" parent="." instance=ExtResource("2_v6fml")]
+
+[node name="Skeleton3D" parent="bulborbGLB2/Armature" index="0"]
+bones/0/position = Vector3(1.6251207e-23, 4.911627, -20.905075)
+bones/1/rotation = Quaternion(0.88695836, -2.0188086e-08, -0.4618495, -3.877018e-08)
+bones/3/rotation = Quaternion(1.5903353e-15, 0.72334546, 9.285157e-16, 0.6904864)
+bones/4/rotation = Quaternion(4.7256635e-16, 0.47613028, 1.514002e-16, 0.87937474)
+bones/5/rotation = Quaternion(-3.9721626e-16, -0.77482265, -7.0877637e-16, 0.63217866)
+bones/7/rotation = Quaternion(6.1205293e-16, 0.7233454, -6.192642e-16, 0.69048643)
+bones/8/rotation = Quaternion(2.1003479e-16, 0.4761302, 1.7949151e-17, 0.8793748)
+bones/9/rotation = Quaternion(-9.959783e-16, -0.7748226, -1.4802361e-15, 0.6321787)
+bones/11/rotation = Quaternion(0.65762895, 0.25985438, -0.25985438, 0.65762883)
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../bulborbGLB2")
+tree_root = SubResource("AnimationNodeStateMachine_khinc")
+anim_player = NodePath("../bulborbGLB2/AnimationPlayer")
+parameters/conditions/is_eating = false
+parameters/conditions/is_idle = false
+parameters/conditions/is_shaking = false
+parameters/conditions/is_walking = false
+
+[editable path="bulborbGLB2"]

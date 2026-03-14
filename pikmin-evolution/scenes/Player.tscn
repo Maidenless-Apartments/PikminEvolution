@@ -21,22 +21,27 @@ animation = &"Walk"
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cw2d6"]
+xfade_time = 0.5
 advance_mode = 2
 advance_condition = &"is_walking"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_khinc"]
+xfade_time = 0.5
 advance_mode = 2
 advance_condition = &"is_shaking"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bruh7"]
+xfade_time = 0.5
 advance_mode = 2
 advance_condition = &"is_eating"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6eyey"]
+xfade_time = 0.5
 advance_mode = 2
 advance_condition = &"is_idle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d3wef"]
+xfade_time = 0.5
 advance_mode = 2
 advance_condition = &"is_idle"
 
@@ -66,9 +71,6 @@ shape = SubResource("SphereShape3D_3li8b")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.96212816, 0)
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.29530793, -0.63141847, 0.7170105, 2.8099656e-10, 0.7504803, 0.6608929, -0.95540214, -0.1951669, 0.22162278, 0.6953963, 0.844963, 0.33040708)
-
 [node name="visuals" type="Node3D" parent="."]
 
 [node name="bulborbGLB2" parent="." instance=ExtResource("2_v6fml")]
@@ -92,5 +94,15 @@ parameters/conditions/is_eating = false
 parameters/conditions/is_idle = false
 parameters/conditions/is_shaking = false
 parameters/conditions/is_walking = false
+
+[node name="cameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35884684, 0)
+
+[node name="pitchPivot" type="Node3D" parent="cameraPivot"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="cameraPivot/pitchPivot"]
+
+[node name="Camera3D" type="Camera3D" parent="cameraPivot/pitchPivot/SpringArm3D"]
+transform = Transform3D(0.9992789, 0.025093677, -0.028495248, -0.012262563, 0.92355186, 0.3832775, 0.03593468, -0.38265175, 0.9231936, 0.027750015, 0.37752014, 1.1689757)
 
 [editable path="bulborbGLB2"]

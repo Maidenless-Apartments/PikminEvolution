@@ -11,7 +11,7 @@ var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravi
 @onready var visual_root = $bulborbGLB2
 
 var pitch := 0.0
-
+	
 func _physics_process(delta):
 	var input_dir = Vector2.ZERO
 	
@@ -32,13 +32,9 @@ func _physics_process(delta):
 	if Input.is_action_pressed("move_right"):
 		input_dir.x += 1
 	if Input.is_action_pressed("move_forward"):
-		input_dir.y -= 1
-	if Input.is_action_pressed("move_back"):
 		input_dir.y += 1
-		
-	if Input.is_action_pressed("eat"):
-		anim_tree.set("parameters/conditions/is_eating", true)
-		anim_tree.set("parameters/conditions/is_idle", false)
+	if Input.is_action_pressed("move_back"):
+		input_dir.y -= 1
 	
 	input_dir = input_dir.normalized()
 
@@ -54,7 +50,7 @@ func _physics_process(delta):
 	var direction = (right * input_dir.x + forward * input_dir.y).normalized()
 	
 	if direction.length() > 0.1:
-		visual_root.look_at(visual_root.global_position + direction, Vector3.UP, true)
+		visual_root.look_at(visual_root.global_position - direction, Vector3.UP, true)
 
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
@@ -71,4 +67,10 @@ func _physics_process(delta):
 	else:
 		anim_tree.set("parameters/conditions/is_walking", false)
 		anim_tree.set("parameters/conditions/is_idle", true)
+		anim_tree.set("parameters/conditions/is_eating", false)
+		
+	if Input.is_action_pressed("eat"):
+		anim_tree.set("parameters/conditions/is_eating", true)
+		anim_tree.set("parameters/conditions/is_idle", false)
+		anim_tree.set("parameters/conditions/is_walking", false)
 	

@@ -16,11 +16,16 @@ var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravi
 @onready var eat_hitbox: Area3D = $eatHitBox
 @onready var eat_timer: Timer = $eatTimer
 @onready var hitbox_timer: Timer = $hitboxTimer
+@onready var visuals = $bulborbGLB2
+@onready var collision = $CollisionShape3D
 
 var is_attacking: bool = false
 var eat_targets_hit: Array[Node] = []
 var mouth_size = 3
 var pitch := 0.0
+var pikmin_eaten: int = 0
+var grown_up: bool = false
+var grown_up2: bool = false
 
 func _ready() -> void:
 	anim_tree.active = true
@@ -139,3 +144,27 @@ func _try_hit_body(body: Node) -> void:
 	if body.is_in_group("eatables"):
 		body.die()
 		eat_targets_hit.append(body)
+		pikmin_eaten += 1
+		check_growth()
+	
+func check_growth():
+	if not grown_up and pikmin_eaten >= 2:
+		grow()
+	if not grown_up2 and pikmin_eaten >= 5:
+		grow2()
+		
+func grow():
+	grown_up = true
+	scale = Vector3(2.0, 2.0, 2.0)
+
+	var hit = eat_hitbox
+	hit.scale = Vector3(2.0, 2.0, 2.0)
+	mouth_size = 10
+	
+func grow2():
+	grown_up2 = true
+	scale = Vector3(4.0, 4.0, 4.0)
+
+	var hit = eat_hitbox
+	hit.scale = Vector3(4.0, 4.0, 4.0)
+	mouth_size = 100

@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://chw47exvd3uxs"]
+[gd_scene load_steps=7 format=3 uid="uid://chw47exvd3uxs"]
 
 [ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
+[ext_resource type="Script" uid="uid://x35yd04tdwyq" path="res://scripts/pikmin_spawner.gd" id="3_4wyf3"]
 
 [sub_resource type="Environment" id="Environment_e5uuo"]
 
@@ -30,20 +31,19 @@ shape = SubResource("BoxShape3D_nnsk1")
 [node name="CharacterBody3D" parent="." instance=ExtResource("1_nnsk1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7654309, 0.6099582, 0.6574005)
 
-[node name="pikmin" parent="." instance=ExtResource("2_rwgxs")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.2860285, 0.4805389, -2.618527)
+[node name="pikminSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.3101254)
+script = ExtResource("3_4wyf3")
+enemy_scene = ExtResource("2_rwgxs")
 
-[node name="pikmin2" parent="." instance=ExtResource("2_rwgxs")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.9030031, 0.4805389, -2.618527)
+[node name="spawnPoints" type="Node3D" parent="."]
+transform = Transform3D(3.216171, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 0.088373184, 0.4347632, -6.8344717)
 
-[node name="pikmin3" parent="." instance=ExtResource("2_rwgxs")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.68253386, 0.4805389, -2.618527)
+[node name="Marker3D" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7593307, 0.42139292, -2.7607331)
 
-[node name="pikmin4" parent="." instance=ExtResource("2_rwgxs")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.7907059, 0.4805389, -1.7707214)
+[node name="Marker3D2" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3264501, 0.42139292, -3.6017861)
 
-[node name="pikmin5" parent="." instance=ExtResource("2_rwgxs")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.2860285, 0.4805389, -1.7638359)
-
-[node name="pikmin6" parent="." instance=ExtResource("2_rwgxs")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.8723966, 0.4805389, -1.7542028)
+[node name="Marker3D3" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0798607, 0.42139304, -1.9395752)

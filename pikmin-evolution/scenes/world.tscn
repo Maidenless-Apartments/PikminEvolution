@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://chw47exvd3uxs"]
+[gd_scene load_steps=6 format=3 uid="uid://chw47exvd3uxs"]
 
 [ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
+[ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
 
 [sub_resource type="Environment" id="Environment_e5uuo"]
 
@@ -19,12 +20,30 @@ environment = SubResource("Environment_e5uuo")
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-transform = Transform3D(83.26006, 0, 0, 0, 1, 0, 0, 0, 77.56953, 0, 0, 0)
+transform = Transform3D(218.749, 0, 0, 0, 1, 0, 0, 0, 225.36577, 0, 0, 0)
 mesh = SubResource("BoxMesh_nnsk1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(75, 0, 0, 0, 75, 0, 0, 0, 75, 0, -36.927914, 0)
+transform = Transform3D(228.12, 0, 0, 0, 228.12, 0, 0, 0, 228.12, 0, -113.1594, 0)
 shape = SubResource("BoxShape3D_nnsk1")
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("1_nnsk1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7654309, 0.6099582, 0.6574005)
+
+[node name="pikmin" parent="." instance=ExtResource("2_rwgxs")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.2860285, 0.4805389, -2.618527)
+
+[node name="pikmin2" parent="." instance=ExtResource("2_rwgxs")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.9030031, 0.4805389, -2.618527)
+
+[node name="pikmin3" parent="." instance=ExtResource("2_rwgxs")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.68253386, 0.4805389, -2.618527)
+
+[node name="pikmin4" parent="." instance=ExtResource("2_rwgxs")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.7907059, 0.4805389, -1.7707214)
+
+[node name="pikmin5" parent="." instance=ExtResource("2_rwgxs")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.2860285, 0.4805389, -1.7638359)
+
+[node name="pikmin6" parent="." instance=ExtResource("2_rwgxs")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 1.8723966, 0.4805389, -1.7542028)

@@ -1,16 +1,36 @@
 extends CharacterBody3D
 
-@export var speed := 6.0
+@export var speed := 2.5
 @export var jump_velocity := 4.5
+@export var eat_total_duration: float = 1.633
+@export var eat_hitbox_delay: float = 0.43
+@export var eat_hitbox_duration: float = 0.28
 var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravity"))
 @onready var anim_tree: AnimationTree = $AnimationTree
+@onready var anim_state = $AnimationTree.get("parameters/playback")
 @export var camera_turn_speed := 2.5
 @export var camera_pitch_speed := 2.0
 @onready var camera_pivot = $cameraPivot
 @onready var pitch_pivot: Node3D = $cameraPivot/pitchPivot
 @onready var visual_root = $bulborbGLB2
+@onready var eat_hitbox: Area3D = $eatHitBox
+@onready var eat_timer: Timer = $eatTimer
+@onready var hitbox_timer: Timer = $hitboxTimer
 
+var is_attacking: bool = false
+var eat_targets_hit: Array[Node] = []
+var mouth_size = 3
 var pitch := 0.0
+
+func _ready() -> void:
+	anim_tree.active = true
+	eat_hitbox.monitoring = false
+	eat_timer.one_shot = true
+	eat_timer.one_shot = true
+
+	eat_timer.timeout.connect(_on_eat_timer_timeout)
+	hitbox_timer.timeout.connect(_on_hitbox_timer_timeout)
+	eat_hitbox.body_entered.connect(_on_eat_hitbox_body_entered)
 	
 func _physics_process(delta):
 	var input_dir = Vector2.ZERO
@@ -52,25 +72,70 @@ func _physics_process(delta):
 	if direction.length() > 0.1:
 		visual_root.look_at(visual_root.global_position - direction, Vector3.UP, true)
 
-	velocity.x = direction.x * speed
-	velocity.z = direction.z * speed
+	if not is_attacking:
+		velocity.x = direction.x * speed
+		velocity.z = direction.z * speed
+	else:
+		velocity.x = 0.0
+		velocity.z = 0.0
 
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+		
+	if Input.is_action_just_pressed("eat") and not is_attacking:
+		start_eat_attack()
+	elif not is_attacking:
+		if input_dir.length() > 0.1:
+			anim_state.travel("Walk")
+		else:
+			anim_state.travel("Idle")
 
 	move_and_slide()
-	
-	if input_dir.length() > 0.1:
-		anim_tree.set("parameters/conditions/is_walking", true)
-		anim_tree.set("parameters/conditions/is_idle", false)
-		anim_tree.set("parameters/conditions/is_eating", false)
-	else:
-		anim_tree.set("parameters/conditions/is_walking", false)
-		anim_tree.set("parameters/conditions/is_idle", true)
-		anim_tree.set("parameters/conditions/is_eating", false)
 		
-	if Input.is_action_pressed("eat"):
-		anim_tree.set("parameters/conditions/is_eating", true)
-		anim_tree.set("parameters/conditions/is_idle", false)
-		anim_tree.set("parameters/conditions/is_walking", false)
+func start_eat_attack() -> void:
+	is_attacking = true
+	eat_targets_hit.clear()
+	anim_state.travel("Eat")
 	
+	eat_timer.start(eat_total_duration)
+	
+	await get_tree().create_timer(eat_hitbox_delay).timeout
+	if is_attacking:
+		enable_eat_hitbox()
+		hitbox_timer.start(eat_hitbox_duration)
+	
+func end_eat_attack() -> void:
+	is_attacking = false
+	eat_hitbox.monitoring = false
+	anim_state.travel("Idle")
+	
+func enable_eat_hitbox() -> void:
+	eat_targets_hit.clear()
+	eat_hitbox.monitoring = true
+	
+	for body in eat_hitbox.get_overlapping_bodies():
+		_try_hit_body(body)
+	
+func disable_eat_hitbox() -> void:
+	eat_hitbox.monitoring = false
+	
+func _on_hitbox_timer_timeout() -> void:
+	disable_eat_hitbox()
+
+func _on_eat_timer_timeout() -> void:
+	is_attacking = false
+	disable_eat_hitbox()
+	
+func _on_eat_hitbox_body_entered(body: Node3D) -> void:
+	_try_hit_body(body)
+		
+func _try_hit_body(body: Node) -> void:
+	if not is_attacking:
+		return
+	
+	if len(eat_targets_hit) >= mouth_size:
+		return
+		
+	if body.is_in_group("eatables"):
+		body.die()
+		eat_targets_hit.append(body)

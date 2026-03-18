@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b06278fk4rc7j"]
+[gd_scene load_steps=17 format=3 uid="uid://b06278fk4rc7j"]
 
 [ext_resource type="Script" uid="uid://dqbyb8fwwepuy" path="res://scripts/player.gd" id="1_p0vlq"]
 [ext_resource type="PackedScene" uid="uid://bnib4n75mnlo" path="res://assets/models/bulborbGLB2.glb" id="2_v6fml"]
@@ -22,32 +22,17 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cw2d6"]
 xfade_time = 0.5
-advance_mode = 2
-advance_condition = &"is_walking"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_khinc"]
-xfade_time = 0.5
-advance_mode = 2
-advance_condition = &"is_shaking"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bruh7"]
-xfade_time = 0.5
-advance_mode = 2
-advance_condition = &"is_eating"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6eyey"]
 xfade_time = 0.5
-advance_mode = 2
-advance_condition = &"is_idle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d3wef"]
-xfade_time = 0.5
-advance_mode = 2
-advance_condition = &"is_idle"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o4126"]
-advance_mode = 2
-advance_condition = &"is_idle"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_khinc"]
 states/Eat/node = SubResource("AnimationNodeAnimation_v6fml")
@@ -61,7 +46,9 @@ states/Walk/node = SubResource("AnimationNodeAnimation_mdl7e")
 states/Walk/position = Vector2(428, 117)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_70d11"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_cw2d6"), "Idle", "Shake", SubResource("AnimationNodeStateMachineTransition_khinc"), "Idle", "Eat", SubResource("AnimationNodeStateMachineTransition_bruh7"), "Eat", "Idle", SubResource("AnimationNodeStateMachineTransition_6eyey"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_d3wef"), "Shake", "Idle", SubResource("AnimationNodeStateMachineTransition_o4126")]
 
-[node name="CharacterBody3D" type="CharacterBody3D"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_v6fml"]
+
+[node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_p0vlq")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -77,23 +64,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.96212816, 0)
 
 [node name="Skeleton3D" parent="bulborbGLB2/Armature" index="0"]
 bones/0/position = Vector3(1.6251207e-23, 4.911627, -20.905075)
-bones/1/rotation = Quaternion(0.9330741, 0.07742446, -0.35005665, -0.0289567)
+bones/1/rotation = Quaternion(0.88695836, -2.0188086e-08, -0.4618495, -3.877018e-08)
 bones/3/rotation = Quaternion(1.5903353e-15, 0.72334546, 9.285157e-16, 0.6904864)
 bones/4/rotation = Quaternion(4.7256635e-16, 0.47613028, 1.514002e-16, 0.87937474)
 bones/5/rotation = Quaternion(-3.9721626e-16, -0.77482265, -7.0877637e-16, 0.63217866)
 bones/7/rotation = Quaternion(6.1205293e-16, 0.7233454, -6.192642e-16, 0.69048643)
 bones/8/rotation = Quaternion(2.1003479e-16, 0.4761302, 1.7949151e-17, 0.8793748)
 bones/9/rotation = Quaternion(-9.959783e-16, -0.7748226, -1.4802361e-15, 0.6321787)
-bones/11/rotation = Quaternion(0.69320595, 0.26890483, -0.14793812, 0.6521274)
+bones/11/rotation = Quaternion(0.65762895, 0.25985438, -0.25985438, 0.65762883)
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 root_node = NodePath("../bulborbGLB2")
 tree_root = SubResource("AnimationNodeStateMachine_khinc")
 anim_player = NodePath("../bulborbGLB2/AnimationPlayer")
-parameters/conditions/is_eating = false
-parameters/conditions/is_idle = false
-parameters/conditions/is_shaking = false
-parameters/conditions/is_walking = false
 
 [node name="cameraPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35884684, 0)
@@ -104,5 +87,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35884684, 0)
 
 [node name="Camera3D" type="Camera3D" parent="cameraPivot/pitchPivot/SpringArm3D"]
 transform = Transform3D(0.9992789, 0.025093677, -0.028495248, -0.012262563, 0.92355186, 0.3832775, 0.03593468, -0.38265175, 0.9231936, 0.027750015, 0.37752014, 1.1689757)
+
+[node name="eatHitBox" type="Area3D" parent="."]
+transform = Transform3D(1.35, 0, 0, 0, 1.35, 0, 0, 0, 1.35, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="eatHitBox"]
+transform = Transform3D(0.565, 0, 0, 0, 0.565, 0, 0, 0, 0.565, 0, 0.277941, -0.3266605)
+shape = SubResource("BoxShape3D_v6fml")
+
+[node name="eatTimer" type="Timer" parent="."]
+
+[node name="hitboxTimer" type="Timer" parent="."]
 
 [editable path="bulborbGLB2"]

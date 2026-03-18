@@ -1,0 +1,82 @@
+[gd_scene load_steps=13 format=3 uid="uid://brb67muit07e4"]
+
+[ext_resource type="PackedScene" uid="uid://ktx4unoh78qn" path="res://assets/models/redPikminGLB.glb" id="1_2i8xm"]
+[ext_resource type="Script" uid="uid://bkdtwghpdig06" path="res://scripts/pikmin.gd" id="1_tn5nw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tn5nw"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2hplc"]
+animation = &"Attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ymhot"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l6kyg"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_46c36"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"is_walking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gwng0"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"is_idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_8wlty"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"is_attacking"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m3ygv"]
+xfade_time = 0.5
+advance_mode = 2
+advance_condition = &"is_idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2w56q"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_mhsm1"]
+states/Attack/node = SubResource("AnimationNodeAnimation_2hplc")
+states/Attack/position = Vector2(533, 164)
+states/Idle/node = SubResource("AnimationNodeAnimation_ymhot")
+states/Idle/position = Vector2(345, 103)
+states/Walk/node = SubResource("AnimationNodeAnimation_l6kyg")
+states/Walk/position = Vector2(540, 52)
+transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_46c36"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_gwng0"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_8wlty"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_m3ygv"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_2w56q")]
+
+[node name="CharacterBody3D" type="CharacterBody3D" groups=["eatables"]]
+script = ExtResource("1_tn5nw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5347669, 0)
+shape = SubResource("BoxShape3D_tn5nw")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../visuals/redPikminGLB")
+tree_root = SubResource("AnimationNodeStateMachine_mhsm1")
+anim_player = NodePath("../visuals/redPikminGLB/AnimationPlayer")
+parameters/conditions/is_attacking = false
+parameters/conditions/is_idle = false
+parameters/conditions/is_walking = false
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="visuals" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="redPikminGLB" parent="visuals" instance=ExtResource("1_2i8xm")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="Skeleton3D" parent="visuals/redPikminGLB/Armature" index="0"]
+bones/0/position = Vector3(1.18431655e-14, 0.5980128, -56.038902)
+bones/1/position = Vector3(32.29393, -3.33786e-06, -1.4116126e-06)
+bones/1/rotation = Quaternion(-1.8731306e-15, -9.1650104e-10, -2.220446e-16, 1)
+bones/2/rotation = Quaternion(-0.06307167, 0.70428836, 0.06307166, 0.70428824)
+bones/3/rotation = Quaternion(-0.06307166, 0.70428836, 0.06307166, 0.70428824)
+bones/4/rotation = Quaternion(-0.06307164, 0.70428836, 0.06307167, 0.70428824)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+
+[editable path="visuals/redPikminGLB"]

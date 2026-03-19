@@ -5,6 +5,8 @@
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3li8b"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_v6fml"]
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v6fml"]
 animation = &"Eat"
 
@@ -46,8 +48,6 @@ states/Walk/node = SubResource("AnimationNodeAnimation_mdl7e")
 states/Walk/position = Vector2(428, 117)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_70d11"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_cw2d6"), "Idle", "Shake", SubResource("AnimationNodeStateMachineTransition_khinc"), "Idle", "Eat", SubResource("AnimationNodeStateMachineTransition_bruh7"), "Eat", "Idle", SubResource("AnimationNodeStateMachineTransition_6eyey"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_d3wef"), "Shake", "Idle", SubResource("AnimationNodeStateMachineTransition_o4126")]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_v6fml"]
-
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_p0vlq")
 
@@ -55,29 +55,38 @@ script = ExtResource("1_p0vlq")
 transform = Transform3D(0.725, 0, 0, 0, 0.725, 0, 0, 0, 0.725, 0, 0.3350759, -0.06961465)
 shape = SubResource("SphereShape3D_3li8b")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.96212816, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(1.3793103, 0, 0, 0, 1.3793103, 0, 0, 0, 1.3793103, 0, 0.8648996, 0.0960202)
+skeleton = NodePath("../..")
 
-[node name="bulborbGLB2" parent="." instance=ExtResource("2_v6fml")]
+[node name="bulborbGLB2" parent="CollisionShape3D" instance=ExtResource("2_v6fml")]
+transform = Transform3D(1.3793103, 0, 0, 0, 1.3793103, 0, 0, 0, 1.3793103, 0, -0.46217364, 0.0960202)
 
-[node name="Skeleton3D" parent="bulborbGLB2/Armature" index="0"]
+[node name="Skeleton3D" parent="CollisionShape3D/bulborbGLB2/Armature" index="0"]
 bones/0/position = Vector3(1.6251207e-23, 4.911627, -20.905075)
-bones/1/rotation = Quaternion(0.8869584, -2.0188084e-08, -0.46184954, -3.877018e-08)
+bones/1/rotation = Quaternion(0.92151517, 0.05657999, -0.38372982, -0.018973392)
 bones/3/rotation = Quaternion(1.5903353e-15, 0.72334546, 9.285157e-16, 0.6904864)
 bones/4/rotation = Quaternion(4.7256635e-16, 0.47613028, 1.514002e-16, 0.87937474)
 bones/5/rotation = Quaternion(-3.9721626e-16, -0.77482265, -7.0877637e-16, 0.63217866)
 bones/7/rotation = Quaternion(6.1205293e-16, 0.7233454, -6.192642e-16, 0.69048643)
 bones/8/rotation = Quaternion(2.1003479e-16, 0.4761302, 1.7949151e-17, 0.8793748)
 bones/9/rotation = Quaternion(-9.959783e-16, -0.7748226, -1.4802361e-15, 0.6321787)
-bones/11/rotation = Quaternion(0.657577, 0.25921687, -0.26001045, 0.6578706)
+bones/11/rotation = Quaternion(0.6847824, 0.26625594, -0.18107745, 0.6537521)
+
+[node name="eatHitBox" type="Area3D" parent="CollisionShape3D"]
+transform = Transform3D(1.8620689, 0, 0, 0, 1.8620689, 0, 0, 0, 1.8620689, 0, -0.46217364, 0.0960202)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionShape3D/eatHitBox"]
+transform = Transform3D(0.565, 0, 0, 0, 0.565, 0, 0, 0, 0.565, 0, 0.277941, -0.3266605)
+shape = SubResource("BoxShape3D_v6fml")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-root_node = NodePath("../bulborbGLB2")
+root_node = NodePath("../CollisionShape3D/bulborbGLB2")
 tree_root = SubResource("AnimationNodeStateMachine_khinc")
-anim_player = NodePath("../bulborbGLB2/AnimationPlayer")
+anim_player = NodePath("../CollisionShape3D/bulborbGLB2/AnimationPlayer")
 
 [node name="cameraPivot" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35884684, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6875003, 0)
 
 [node name="pitchPivot" type="Node3D" parent="cameraPivot"]
 
@@ -86,15 +95,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35884684, 0)
 [node name="Camera3D" type="Camera3D" parent="cameraPivot/pitchPivot/SpringArm3D"]
 transform = Transform3D(0.9992789, 0.025093677, -0.028495248, -0.012262563, 0.92355186, 0.3832775, 0.03593468, -0.38265175, 0.9231936, 0.027750015, 0.37752014, 1.1689757)
 
-[node name="eatHitBox" type="Area3D" parent="."]
-transform = Transform3D(1.35, 0, 0, 0, 1.35, 0, 0, 0, 1.35, 0, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="eatHitBox"]
-transform = Transform3D(0.565, 0, 0, 0, 0.565, 0, 0, 0, 0.565, 0, 0.277941, -0.3266605)
-shape = SubResource("BoxShape3D_v6fml")
-
 [node name="eatTimer" type="Timer" parent="."]
 
 [node name="hitboxTimer" type="Timer" parent="."]
 
-[editable path="bulborbGLB2"]
+[editable path="CollisionShape3D/bulborbGLB2"]

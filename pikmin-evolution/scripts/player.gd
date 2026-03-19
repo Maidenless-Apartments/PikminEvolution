@@ -12,11 +12,11 @@ var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravi
 @export var camera_pitch_speed := 2.0
 @onready var camera_pivot = $cameraPivot
 @onready var pitch_pivot: Node3D = $cameraPivot/pitchPivot
-@onready var visual_root = $bulborbGLB2
-@onready var eat_hitbox: Area3D = $eatHitBox
+@onready var visual_root = $CollisionShape3D
+@onready var eat_hitbox: Area3D = $CollisionShape3D/eatHitBox
 @onready var eat_timer: Timer = $eatTimer
 @onready var hitbox_timer: Timer = $hitboxTimer
-@onready var visuals = $bulborbGLB2
+@onready var visuals = $CollisionShape3D/bulborbGLB2
 @onready var collision = $CollisionShape3D
 
 var is_attacking: bool = false

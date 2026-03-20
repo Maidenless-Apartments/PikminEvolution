@@ -5,6 +5,8 @@ extends CharacterBody3D
 @export var eat_total_duration: float = 1.633
 @export var eat_hitbox_delay: float = 0.43
 @export var eat_hitbox_duration: float = 0.28
+@export var stage1_model: PackedScene
+@export var stage2_model: PackedScene
 var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravity"))
 @onready var anim_tree: AnimationTree = $AnimationTree
 @onready var anim_state = $AnimationTree.get("parameters/playback")

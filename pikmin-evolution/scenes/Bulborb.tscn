@@ -1,0 +1,76 @@
+[gd_scene load_steps=15 format=3 uid="uid://c6ymi0qch4kdy"]
+
+[ext_resource type="PackedScene" uid="uid://bnib4n75mnlo" path="res://assets/models/bulborbGLB2.glb" id="1_oxu1p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_16yex"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v6fml"]
+animation = &"Eat"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qu4a1"]
+animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3li8b"]
+animation = &"Shake"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mdl7e"]
+animation = &"Walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_70d11"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cw2d6"]
+xfade_time = 0.5
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_khinc"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bruh7"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6eyey"]
+xfade_time = 0.5
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d3wef"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_o4126"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_kblh4"]
+states/Eat/node = SubResource("AnimationNodeAnimation_v6fml")
+states/Eat/position = Vector2(420, 213)
+states/Idle/node = SubResource("AnimationNodeAnimation_qu4a1")
+states/Idle/position = Vector2(264, 128)
+states/Shake/node = SubResource("AnimationNodeAnimation_3li8b")
+states/Shake/position = Vector2(420, 37)
+states/Start/position = Vector2(93, 117)
+states/Walk/node = SubResource("AnimationNodeAnimation_mdl7e")
+states/Walk/position = Vector2(428, 117)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_70d11"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_cw2d6"), "Idle", "Shake", SubResource("AnimationNodeStateMachineTransition_khinc"), "Idle", "Eat", SubResource("AnimationNodeStateMachineTransition_bruh7"), "Eat", "Idle", SubResource("AnimationNodeStateMachineTransition_6eyey"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_d3wef"), "Shake", "Idle", SubResource("AnimationNodeStateMachineTransition_o4126")]
+
+[node name="BulborbVisual" type="Node3D"]
+
+[node name="bulborbGLB2" parent="." instance=ExtResource("1_oxu1p")]
+transform = Transform3D(1.3793103, 0, 0, 0, 1.3793103, 0, 0, 0, 1.3793103, 0, -0.001355797, 0.0960202)
+
+[node name="Skeleton3D" parent="bulborbGLB2/Armature" index="0"]
+bones/0/position = Vector3(1.6251207e-23, 4.911627, -20.905075)
+bones/1/rotation = Quaternion(0.8869584, -2.0188088e-08, -0.46184954, -3.877018e-08)
+bones/3/rotation = Quaternion(1.5903353e-15, 0.72334546, 9.285157e-16, 0.6904864)
+bones/4/rotation = Quaternion(4.7256635e-16, 0.47613028, 1.514002e-16, 0.87937474)
+bones/5/rotation = Quaternion(-3.9721626e-16, -0.77482265, -7.0877637e-16, 0.63217866)
+bones/7/rotation = Quaternion(6.1205293e-16, 0.7233454, -6.192642e-16, 0.69048643)
+bones/8/rotation = Quaternion(2.1003479e-16, 0.4761302, 1.7949151e-17, 0.8793748)
+bones/9/rotation = Quaternion(-9.959783e-16, -0.7748226, -1.4802361e-15, 0.6321787)
+bones/11/rotation = Quaternion(0.65761256, 0.25965372, -0.25990352, 0.65770495)
+
+[node name="eatHitBox" type="Area3D" parent="."]
+transform = Transform3D(1.8620689, 0, 0, 0, 1.8620689, 0, 0, 0, 1.8620689, 0, 0.021299064, 0.0960202)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="eatHitBox"]
+transform = Transform3D(0.565, 0, 0, 0, 0.565, 0, 0, 0, 0.565, 0, 0.277941, -0.3266605)
+shape = SubResource("BoxShape3D_16yex")
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+root_node = NodePath("../bulborbGLB2")
+tree_root = SubResource("AnimationNodeStateMachine_kblh4")
+anim_player = NodePath("../bulborbGLB2/AnimationPlayer")
+
+[editable path="bulborbGLB2"]

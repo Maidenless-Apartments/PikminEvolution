@@ -1,10 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b06278fk4rc7j"]
+[gd_scene load_steps=7 format=3 uid="uid://b06278fk4rc7j"]
 
 [ext_resource type="Script" uid="uid://dqbyb8fwwepuy" path="res://scripts/player.gd" id="1_p0vlq"]
 [ext_resource type="PackedScene" uid="uid://c6ymi0qch4kdy" path="res://scenes/Bulborb.tscn" id="2_3li8b"]
 [ext_resource type="PackedScene" uid="uid://cd1s0uwecy3k7" path="res://scenes/Bulblax.tscn" id="3_mdl7e"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3li8b"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_mdl7e"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qu4a1"]
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_p0vlq")
@@ -30,3 +34,25 @@ transform = Transform3D(0.9992789, 0.025093677, -0.028495248, -0.012262563, 0.92
 [node name="eatTimer" type="Timer" parent="."]
 
 [node name="hitboxTimer" type="Timer" parent="."]
+
+[node name="shakeTimer" type="Timer" parent="."]
+
+[node name="roarTimer" type="Timer" parent="."]
+
+[node name="eatCooldown" type="Timer" parent="."]
+
+[node name="shakeCooldown" type="Timer" parent="."]
+
+[node name="roarCooldown" type="Timer" parent="."]
+
+[node name="shakeArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="shakeArea"]
+transform = Transform3D(1.55, 0, 0, 0, 1.55, 0, 0, 0, 1.55, 0, 0.381445, 0)
+shape = SubResource("SphereShape3D_mdl7e")
+
+[node name="roarArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roarArea"]
+transform = Transform3D(5.36, 0, 0, 0, 5.36, 0, 0, 0, 5.36, 0, 0.30091166, 0)
+shape = SubResource("SphereShape3D_qu4a1")

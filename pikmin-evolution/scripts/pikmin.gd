@@ -10,6 +10,8 @@ extends CharacterBody3D
 @onready var anim_tree: AnimationTree = $AnimationTree
 
 var wander_direction: Vector3 = Vector3.ZERO
+var is_frozen := false
+var knockback_velocity: Vector3 = Vector3.ZERO
 
 func _ready() -> void:
 	randomize()
@@ -23,6 +25,15 @@ func _physics_process(delta: float) -> void:
 
 	velocity.x = wander_direction.x * move_speed
 	velocity.z = wander_direction.z * move_speed
+	
+	if is_frozen:
+		velocity.x = 0
+		velocity.z = 0
+		move_and_slide()
+		return
+
+	velocity += knockback_velocity
+	knockback_velocity = knockback_velocity.move_toward(Vector3.ZERO, 20.0 * delta)
 
 	if wander_direction.length() > 0.01:
 		visuals.look_at(
@@ -57,3 +68,19 @@ func _on_timer_timeout() -> void:
 	
 func die() -> void:
 	queue_free()
+
+func repel_from(source_pos: Vector3) -> void:
+	var dir = global_position - source_pos
+	dir.y = 0
+	dir = dir.normalized()
+	knockback_velocity = dir * 8.0
+	
+func freeze_for(duration: float) -> void:
+	if is_frozen:
+		return
+	
+	is_frozen = true
+	
+	var timer = get_tree().create_timer(duration)
+	await timer.timeout
+	is_frozen = false

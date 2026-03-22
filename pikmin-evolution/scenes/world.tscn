@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://chw47exvd3uxs"]
+[gd_scene load_steps=9 format=3 uid="uid://chw47exvd3uxs"]
 
 [ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
 [ext_resource type="Script" uid="uid://x35yd04tdwyq" path="res://scripts/pikmin_spawner.gd" id="3_4wyf3"]
+[ext_resource type="Script" uid="uid://c5n5tejvton5d" path="res://scripts/game_manager.gd" id="4_k0juu"]
+[ext_resource type="Script" uid="uid://dixfjhgs1ecf2" path="res://scripts/hud.gd" id="5_71j4m"]
 
 [sub_resource type="Environment" id="Environment_e5uuo"]
 
@@ -47,3 +49,55 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3264501, 0.42139292, -3.601
 
 [node name="Marker3D3" type="Marker3D" parent="spawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0798607, 0.42139304, -1.9395752)
+
+[node name="gameManager" type="Node" parent="."]
+script = ExtResource("4_k0juu")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("5_71j4m")
+
+[node name="TimeLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 1042.0
+offset_top = 24.0
+offset_right = 1089.0
+offset_bottom = 47.0
+text = "Time: "
+
+[node name="ScoreLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 27.0
+offset_right = 127.0
+offset_bottom = 50.0
+text = "Eaten: "
+
+[node name="StageLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 60.0
+offset_right = 98.0
+offset_bottom = 83.0
+text = "Stage:"
+
+[node name="MessageLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 401.0
+offset_top = 160.0
+offset_right = 668.0
+offset_bottom = 362.0
+
+[node name="HungerBar" type="ProgressBar" parent="HUD/Control"]
+modulate = Color(0.7412862, 0.07741543, 0, 1)
+layout_mode = 0
+offset_left = 59.0
+offset_top = 385.0
+offset_right = 958.0
+offset_bottom = 412.0
+show_percentage = false

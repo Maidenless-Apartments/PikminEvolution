@@ -244,6 +244,7 @@ func check_growth():
 		
 func grow():
 	grown_up = true
+	growth_stage = 1
 	scale = Vector3(2.0, 2.0, 2.0)
 
 	var hit = eat_hitbox
@@ -252,7 +253,7 @@ func grow():
 	can_shake = true
 	hunger_decay_per_second = 4.0
 	hunger_gain_on_eat = 10
-	stage_changed.emit()
+	stage_changed.emit(1)
 	
 func grow2():
 	grown_up2 = true
@@ -265,9 +266,9 @@ func grow2():
 	eat_hitbox_delay = 1.23
 	eat_hitbox_duration = 2.57
 	can_roar = true
-	hunger_decay_per_second = 10
+	hunger_decay_per_second = 6.0
 	hunger_gain_on_eat = 12
-	stage_changed.emit()
+	stage_changed.emit(1)
 	
 func set_model(model_scene: PackedScene):
 	if model_scene == null:

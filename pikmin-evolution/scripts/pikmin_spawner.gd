@@ -6,6 +6,7 @@ extends Node3D
 @onready var spawn_points = $"../spawnPoints".get_children()
 
 var current_enemies: int = 0
+@onready var player = $"../CharacterBody3D"
 
 func _ready():
 	var timer = Timer.new()
@@ -25,8 +26,39 @@ func _on_spawn_timer_timeout():
 	var enemy = enemy_scene.instantiate()
 	get_tree().current_scene.add_child(enemy)
 	enemy.global_position = point.global_position
+
+	if enemy.has_method("set_player_target"):
+		enemy.set_player_target(player)
+
+	if enemy.has_method("set_nature"):
+		enemy.set_nature(_roll_nature_for_stage(_get_player_stage()))
+
 	current_enemies += 1
 	enemy.tree_exited.connect(_on_enemy_removed)
+
+func _get_player_stage() -> int:
+	if player == null:
+		return 0
+
+	return int(player.get("growth_stage"))
+
+func _roll_nature_for_stage(stage: int) -> int:
+	var neutral_weight: float = 0.65
+	var scared_weight: float = 0.25
+
+	if stage >= 2:
+		neutral_weight = 0.10
+		scared_weight = 0.20
+	elif stage >= 1:
+		neutral_weight = 0.35
+		scared_weight = 0.35
+
+	var roll := randf()
+	if roll < neutral_weight:
+		return 0
+	if roll < neutral_weight + scared_weight:
+		return 1
+	return 2
 
 func _on_enemy_removed():
 	current_enemies -= 1

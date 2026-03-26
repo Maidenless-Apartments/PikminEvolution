@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://brb67muit07e4"]
+[gd_scene load_steps=14 format=3 uid="uid://brb67muit07e4"]
 
 [ext_resource type="PackedScene" uid="uid://ktx4unoh78qn" path="res://assets/models/redPikminGLB.glb" id="1_2i8xm"]
 [ext_resource type="Script" uid="uid://bkdtwghpdig06" path="res://scripts/pikmin.gd" id="1_tn5nw"]
+[ext_resource type="PackedScene" uid="uid://dlek5apwebyhd" path="res://assets/models/yellowPikminGLB.glb" id="3_2hplc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tn5nw"]
 
@@ -68,6 +69,7 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0
 
 [node name="redPikminGLB" parent="visuals" instance=ExtResource("1_2i8xm")]
 transform = Transform3D(-1.4643315e-08, 0, -0.335, 0, 0.335, 0, 0.335, 0, -1.4643315e-08, 0, 0, 0)
+visible = false
 
 [node name="Skeleton3D" parent="visuals/redPikminGLB/Armature" index="0"]
 bones/0/position = Vector3(1.18431655e-14, 0.5980128, -56.038902)
@@ -76,6 +78,10 @@ bones/1/rotation = Quaternion(-1.8731306e-15, -9.1650104e-10, -2.220446e-16, 1)
 bones/2/rotation = Quaternion(-0.06307167, 0.70428836, 0.06307166, 0.70428824)
 bones/3/rotation = Quaternion(-0.06307166, 0.70428836, 0.06307166, 0.70428824)
 bones/4/rotation = Quaternion(-0.06307164, 0.70428836, 0.06307167, 0.70428824)
+
+[node name="yellowPikminGLB" parent="visuals" instance=ExtResource("3_2hplc")]
+transform = Transform3D(-1.4861872e-08, 0, -0.34, 0, 0.34, 0, 0.34, 0, -1.4861872e-08, 0, 0, 0)
+visible = false
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 

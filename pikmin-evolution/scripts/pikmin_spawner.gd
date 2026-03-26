@@ -1,11 +1,12 @@
 extends Node3D
 
 @export var enemy_scene: PackedScene
-@export var max_enemies: int = 60
+@export var max_enemies: int = 100
 @export var spawn_interval: float = .5
 @onready var spawn_points = $"../spawnPoints".get_children()
 
 var current_enemies: int = 0
+var rng = RandomNumberGenerator.new()
 @onready var player = $"../CharacterBody3D"
 
 func _ready():
@@ -14,6 +15,7 @@ func _ready():
 	timer.autostart = true
 	timer.timeout.connect(_on_spawn_timer_timeout)
 	add_child(timer)
+	rng.randomize()
 
 func _on_spawn_timer_timeout():
 	if current_enemies >= max_enemies:
@@ -24,6 +26,11 @@ func _on_spawn_timer_timeout():
 	
 	var point = spawn_points[randi() % spawn_points.size()]
 	var enemy = enemy_scene.instantiate()
+	var random_int = rng.randi_range(1, 2)
+	if random_int == 1:
+		enemy.get_node("visuals/redPikminGLB").show()
+	elif random_int == 2:
+		enemy.get_node("visuals/yellowPikminGLB").show()
 	get_tree().current_scene.add_child(enemy)
 	enemy.global_position = point.global_position
 

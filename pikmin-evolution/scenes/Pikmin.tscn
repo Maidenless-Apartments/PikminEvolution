@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://brb67muit07e4"]
+[gd_scene load_steps=15 format=3 uid="uid://brb67muit07e4"]
 
 [ext_resource type="PackedScene" uid="uid://ktx4unoh78qn" path="res://assets/models/redPikminGLB.glb" id="1_2i8xm"]
 [ext_resource type="Script" uid="uid://bkdtwghpdig06" path="res://scripts/pikmin.gd" id="1_tn5nw"]
 [ext_resource type="PackedScene" uid="uid://dlek5apwebyhd" path="res://assets/models/yellowPikminGLB.glb" id="3_2hplc"]
+[ext_resource type="PackedScene" uid="uid://c6a37gcl1a3y0" path="res://assets/models/bluePikminGLB.glb" id="4_ymhot"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tn5nw"]
 
@@ -83,6 +84,15 @@ bones/4/rotation = Quaternion(-0.06307164, 0.70428836, 0.06307167, 0.70428824)
 transform = Transform3D(-1.4861872e-08, 0, -0.34, 0, 0.34, 0, 0.34, 0, -1.4861872e-08, 0, 0, 0)
 visible = false
 
+[node name="bluePikminGLB" parent="visuals" instance=ExtResource("4_ymhot")]
+transform = Transform3D(-1.4861872e-08, 0, -0.34, 0, 0.34, 0, 0.34, 0, -1.4861872e-08, 0, 0, 0)
+visible = false
+
+[node name="group3" parent="visuals/bluePikminGLB" index="0"]
+transform = Transform3D(0.0019409945, -0.0024044414, -2.8663175e-10, 0, 3.6837025e-10, -0.003090113, 0.0024044414, 0.0019409945, 2.3138455e-10, -0.08884844, 0.065270305, -0.06655646)
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 
 [editable path="visuals/redPikminGLB"]
+[editable path="visuals/yellowPikminGLB"]
+[editable path="visuals/bluePikminGLB"]

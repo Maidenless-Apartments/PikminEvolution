@@ -26,11 +26,9 @@ func _on_spawn_timer_timeout():
 	
 	var point = spawn_points[randi() % spawn_points.size()]
 	var enemy = enemy_scene.instantiate()
-	var random_int = rng.randi_range(1, 2)
-	if random_int == 1:
-		enemy.get_node("visuals/redPikminGLB").show()
-	elif random_int == 2:
-		enemy.get_node("visuals/yellowPikminGLB").show()
+	var random_skin_index = rng.randi_range(0, 2)
+	if enemy.has_method("apply_skin_by_index"):
+		enemy.apply_skin_by_index(random_skin_index)
 	get_tree().current_scene.add_child(enemy)
 	enemy.global_position = point.global_position
 

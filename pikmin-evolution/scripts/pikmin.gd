@@ -17,6 +17,8 @@ extends CharacterBody3D
 @onready var visuals: Node3D = $visuals
 @onready var anim_tree: AnimationTree = $AnimationTree
 
+const SKIN_NODE_NAMES: Array[String] = ["redPikminGLB", "yellowPikminGLB", "bluePikminGLB"]
+
 enum Nature {
 	NEUTRAL,
 	SCARED,
@@ -36,9 +38,29 @@ var player_target: Node3D
 
 func _ready() -> void:
 	randomize()
+	apply_skin_by_index(randi_range(0, SKIN_NODE_NAMES.size() - 1))
 	current_move_speed = move_speed
 	player_target = _find_player()
 	pick_new_direction()
+
+func apply_skin_by_index(skin_index: int) -> void:
+	if visuals == null:
+		return
+
+	var clamped_index := clampi(skin_index, 0, SKIN_NODE_NAMES.size() - 1)
+	var selected_skin_name: String = SKIN_NODE_NAMES[clamped_index]
+	var selected_skin: Node3D = visuals.get_node_or_null(selected_skin_name)
+
+	if selected_skin == null:
+		return
+
+	for skin_name in SKIN_NODE_NAMES:
+		var skin_node := visuals.get_node_or_null(skin_name)
+		if skin_node is Node3D:
+			skin_node.visible = skin_name == selected_skin_name
+
+	anim_tree.root_node = NodePath("../visuals/%s" % selected_skin_name)
+	anim_tree.anim_player = NodePath("../visuals/%s/AnimationPlayer" % selected_skin_name)
 
 func _physics_process(delta: float) -> void:
 	_update_behavior(delta)

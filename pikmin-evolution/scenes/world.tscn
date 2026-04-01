@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://chw47exvd3uxs"]
+[gd_scene load_steps=15 format=3 uid="uid://chw47exvd3uxs"]
 
 [ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
@@ -8,9 +8,23 @@
 
 [sub_resource type="Environment" id="Environment_e5uuo"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_nnsk1"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71j4m"]
+albedo_color = Color(0.11263616, 0.5351684, 0.29986113, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_nnsk1"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_71j4m"]
+material = SubResource("StandardMaterial3D_71j4m")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qfnet"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_71j4m"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qfnet"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qfnet"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_i7141"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i7141"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -21,14 +35,23 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5
 environment = SubResource("Environment_e5uuo")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(0.695, 0, 0, 0, 0.695, 0, 0, 0, 0.695, 0, -0.1, -47.248657)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 transform = Transform3D(218.749, 0, 0, 0, 1, 0, 0, 0, 225.36577, 0, 0, 0)
-mesh = SubResource("BoxMesh_nnsk1")
+mesh = SubResource("CylinderMesh_71j4m")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(228.12, 0, 0, 0, 228.12, 0, 0, 0, 228.12, 0, -113.1594, 0)
-shape = SubResource("BoxShape3D_nnsk1")
+transform = Transform3D(228.12, 0, 0, 0, 228.12, 0, 0, 0, 228.12, 0, -226.81644, 0)
+shape = SubResource("CylinderShape3D_qfnet")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(218.74898, 0, 0, 0, 0.99999994, 0, 0, 0, 225.36577, 0, 0, -129.36963)
+mesh = SubResource("CylinderMesh_71j4m")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(228.11998, 0, 0, 0, 228.11998, 0, 0, 0, 228.11998, 0, -226.81642, -129.36963)
+shape = SubResource("CylinderShape3D_qfnet")
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("1_nnsk1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7654309, 0.6099582, 0.6574005)
@@ -39,7 +62,7 @@ script = ExtResource("3_4wyf3")
 enemy_scene = ExtResource("2_rwgxs")
 
 [node name="spawnPoints" type="Node3D" parent="."]
-transform = Transform3D(3.216171, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 0.088373184, 0.4347632, -6.8344717)
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 0.088373184, 0.4347632, -6.8344717)
 
 [node name="Marker3D" type="Marker3D" parent="spawnPoints"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7593307, 0.42139292, -2.7607331)
@@ -57,9 +80,11 @@ script = ExtResource("4_k0juu")
 
 [node name="Control" type="Control" parent="HUD"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("5_71j4m")
 
 [node name="TimeLabel" type="Label" parent="HUD/Control"]
@@ -96,8 +121,118 @@ offset_bottom = 362.0
 [node name="HungerBar" type="ProgressBar" parent="HUD/Control"]
 modulate = Color(0.7412862, 0.07741543, 0, 1)
 layout_mode = 0
-offset_left = 59.0
-offset_top = 385.0
-offset_right = 958.0
-offset_bottom = 412.0
+offset_left = 132.0
+offset_top = 575.0
+offset_right = 1031.0
+offset_bottom = 602.0
 show_percentage = false
+
+[node name="environment" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(3.162264, 0, 0, 0, 5.736, 0, 0, 0, 2.639948, -14.7345085, 3.6126268, -15.3676605)
+mesh = SubResource("BoxMesh_71j4m")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(3.162264, 0, 0, 0, 5.736, 0, 0, 0, 2.639948, 27.3068, 3.6126268, -12.521744)
+mesh = SubResource("BoxMesh_71j4m")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(3.162264, 0, 0, 0, 5.736, 0, 0, 0, 2.639948, 1.2503376, 3.6126268, -18.421078)
+mesh = SubResource("BoxMesh_71j4m")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(52.902103, 0, 0, 0, 7.46, 0, 0, 0, 18.381483, 0, 15.605736, -60.413883)
+mesh = SubResource("BoxMesh_qfnet")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(3.162264, 0, 0, 0, 13.9706745, 0, 0, 0, 2.639948, -23.991728, 6.0582066, -53.17107)
+mesh = SubResource("BoxMesh_71j4m")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(3.162264, 0, 0, 0, 13.9706745, 0, 0, 0, 2.639948, -23.991728, 6.0582066, -67.30311)
+mesh = SubResource("BoxMesh_71j4m")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(3.162264, 0, 0, 0, 13.9706745, 0, 0, 0, 2.639948, 23.768682, 6.0582066, -53.114143)
+mesh = SubResource("BoxMesh_71j4m")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(3.162264, 0, 0, 0, 13.9706745, 0, 0, 0, 2.639948, 23.32836, 6.0582066, -67.6463)
+mesh = SubResource("BoxMesh_71j4m")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(52.902103, 0, 0, 0, 11.73903, 0, 0, 0, 2.5026379, 0, 25.260647, -68.05646)
+mesh = SubResource("BoxMesh_qfnet")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(32.21742, 0, -23.142199, 0, 1, 0, 12.456222, 0, 59.85618, -23.390427, -0.056634903, -140.12578)
+mesh = SubResource("CylinderMesh_qfnet")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(9.735, 0, 0, 0, 9.735, 0, 0, 0, 9.735, 39.65503, 0.52682495, -104.27667)
+mesh = SubResource("SphereMesh_i7141")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(9.735, 0, 0, 0, 9.735, 0, 0, 0, 9.735, 31.01749, 0.52682495, -121.63048)
+mesh = SubResource("SphereMesh_i7141")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(9.735, 0, 0, 0, 9.735, 0, 0, 0, 9.735, 53.30181, 0.52682495, -129.13678)
+mesh = SubResource("SphereMesh_i7141")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(9.735, 0, 0, 0, 9.735, 0, 0, 0, 9.735, 39.21059, 0.52682495, -150.13892)
+mesh = SubResource("SphereMesh_i7141")
+
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, -34.899044, 43.490746, 11.357182)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, -2.5022469, 43.490753, 24.554363)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D17" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, 42.08849, 43.490746, 7.7798347)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D18" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, -58.62828, 43.490738, -21.628254)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D19" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, -62.41466, 43.490746, -60.491932)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D20" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, -51.05695, 43.490746, -93.5611)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D21" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, 62.742, 43.490746, -23.78532)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D22" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, 58.214176, 43.490746, -71.52945)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D23" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, 62.454052, 43.490738, -116.09105)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D24" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, 58.052235, 43.490738, -162.82661)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D25" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, 8.031254, 43.490738, -201.33966)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D26" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, -47.03374, 43.490738, -185.31625)
+mesh = SubResource("CylinderMesh_i7141")
+
+[node name="MeshInstance3D27" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(12.141131, 0, 0, 0, 44.864605, 0, 0, 0, 12.6741495, -67.28783, 43.490738, -136.4558)
+mesh = SubResource("CylinderMesh_i7141")

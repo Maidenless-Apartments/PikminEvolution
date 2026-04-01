@@ -1,6 +1,6 @@
 extends Node
 
-@export var level_time: float = 120.0
+@export var level_time: float = 240.0
 
 @onready var player = $"../CharacterBody3D"
 

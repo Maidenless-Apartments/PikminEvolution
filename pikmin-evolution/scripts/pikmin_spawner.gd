@@ -1,7 +1,7 @@
 extends Node3D
 
 @export var enemy_scene: PackedScene
-@export var max_enemies: int = 100
+@export var max_enemies: int = 200
 @export var spawn_interval: float = .5
 @onready var spawn_points = $"../spawnPoints".get_children()
 

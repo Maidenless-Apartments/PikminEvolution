@@ -5,7 +5,7 @@ signal pikmin_eaten_changed(value)
 signal died
 signal stage_changed(stage)
 
-@export var speed := 2.5
+@export var speed := 5
 @export var jump_velocity := 4.5
 @export var eat_total_duration: float = 1.633
 @export var eat_hitbox_delay: float = 0.43
@@ -15,7 +15,7 @@ signal stage_changed(stage)
 @export var stage1_model: PackedScene
 @export var stage2_model: PackedScene
 @export var max_hunger: float = 100.0
-@export var hunger_decay_per_second: float = 2.0
+@export var hunger_decay_per_second: float = 1.0
 @export var hunger_gain_on_eat: float = 6.0
 var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravity"))
 @export var camera_turn_speed := 2.5
@@ -251,7 +251,7 @@ func grow():
 	hit.scale = Vector3(2.0, 2.0, 2.0)
 	mouth_size = 10
 	can_shake = true
-	hunger_decay_per_second = 4.0
+	hunger_decay_per_second = 2.0
 	hunger_gain_on_eat = 10
 	stage_changed.emit(1)
 	
@@ -266,7 +266,7 @@ func grow2():
 	eat_hitbox_delay = 1.23
 	eat_hitbox_duration = 2.57
 	can_roar = true
-	hunger_decay_per_second = 6.0
+	hunger_decay_per_second = 3.0
 	hunger_gain_on_eat = 12
 	stage_changed.emit(1)
 	

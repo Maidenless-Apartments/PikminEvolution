@@ -48,8 +48,8 @@ var growth_stage := 0
 var anim_tree: AnimationTree
 var anim_state: AnimationNodeStateMachinePlayback
 var eat_hitbox: Area3D
-var threshold1: int = 20
-var threshold2: int = 60
+var threshold1: int = 2
+var threshold2: int = 5
 var hunger: float = 100.0
 
 func _ready() -> void:

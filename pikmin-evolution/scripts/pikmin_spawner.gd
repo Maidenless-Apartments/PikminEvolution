@@ -1,15 +1,27 @@
 extends Node3D
 
 @export var enemy_scene: PackedScene
-@export var max_enemies: int = 200
+@export var max_enemies: int = 50
+@export var max_enemies_stage2: int = 100
+@export var max_enemies_stage3: int = 200
 @export var spawn_interval: float = .5
-@onready var spawn_points = $"../spawnPoints".get_children()
+@export var spawn_interval3: float = .2
+@onready var spawn_points_stage1 = $"../spawnPoints".get_children()
+@onready var spawn_points_stage2_node = get_node_or_null("../spawnPoints2")
+@onready var spawn_points_stage3_node = get_node_or_null("../spawnPoints3")
 
 var current_enemies: int = 0
+var spawn_points = []
+var base_max_enemies: int = 0
 var rng = RandomNumberGenerator.new()
+var num_spawned: int = 0
 @onready var player = $"../CharacterBody3D"
 
 func _ready():
+	base_max_enemies = max_enemies
+	spawn_points = spawn_points_stage1
+	_update_spawn_settings_for_stage(_get_player_stage())
+
 	var timer = Timer.new()
 	timer.wait_time = spawn_interval
 	timer.autostart = true
@@ -18,7 +30,12 @@ func _ready():
 	rng.randomize()
 
 func _on_spawn_timer_timeout():
+	_update_spawn_settings_for_stage(_get_player_stage())
+
 	if current_enemies >= max_enemies:
+		return
+	
+	if num_spawned >= max_enemies:
 		return
 	
 	if spawn_points.is_empty():
@@ -39,6 +56,7 @@ func _on_spawn_timer_timeout():
 		enemy.set_nature(_roll_nature_for_stage(_get_player_stage()))
 
 	current_enemies += 1
+	num_spawned += 1
 	enemy.tree_exited.connect(_on_enemy_removed)
 
 func _get_player_stage() -> int:
@@ -46,6 +64,24 @@ func _get_player_stage() -> int:
 		return 0
 
 	return int(player.get("growth_stage"))
+
+func _update_spawn_settings_for_stage(stage: int) -> void:
+	if stage >= 2:
+		if spawn_points_stage3_node != null:
+			spawn_points = spawn_points_stage3_node.get_children()
+		max_enemies = max_enemies_stage3
+		spawn_interval = spawn_interval3
+		num_spawned = 0
+		return
+	if stage >= 1:
+		if spawn_points_stage2_node != null:
+			spawn_points = spawn_points_stage2_node.get_children()
+		max_enemies = max_enemies_stage2
+		num_spawned = 0
+		return
+
+	spawn_points = spawn_points_stage1
+	max_enemies = base_max_enemies
 
 func _roll_nature_for_stage(stage: int) -> int:
 	var neutral_weight: float = 0.65

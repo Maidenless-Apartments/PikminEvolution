@@ -20,8 +20,10 @@ signal stage_changed(stage)
 var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravity"))
 @export var camera_turn_speed := 2.5
 @export var camera_pitch_speed := 2.0
+@export var camera_distance_stage2: float = 1.5
 @onready var camera_pivot = $cameraPivot
 @onready var pitch_pivot: Node3D = $cameraPivot/pitchPivot
+@onready var spring_arm: SpringArm3D = $cameraPivot/pitchPivot/SpringArm3D
 @onready var visual_root = $visualRoot
 @onready var eat_timer: Timer = $eatTimer
 @onready var hitbox_timer: Timer = $hitboxTimer
@@ -48,13 +50,16 @@ var growth_stage := 0
 var anim_tree: AnimationTree
 var anim_state: AnimationNodeStateMachinePlayback
 var eat_hitbox: Area3D
-var threshold1: int = 20
-var threshold2: int = 60
+var threshold1: int = 2
+var threshold2: int = 6
 var hunger: float = 100.0
+var base_camera_distance: float = 0.0
 
 func _ready() -> void:
 	set_model(stage1_model)
 	anim_tree.active = true
+	base_camera_distance = spring_arm.spring_length
+	update_camera_distance()
 	eat_hitbox.monitoring = false
 	eat_timer.one_shot = true
 	hitbox_timer.one_shot = true
@@ -246,6 +251,7 @@ func grow():
 	grown_up = true
 	growth_stage = 1
 	scale = Vector3(2.0, 2.0, 2.0)
+	update_camera_distance()
 
 	var hit = eat_hitbox
 	hit.scale = Vector3(2.0, 2.0, 2.0)
@@ -260,6 +266,7 @@ func grow2():
 	growth_stage = 2
 	set_model(stage2_model)
 	scale = Vector3(4.0, 4.0, 4.0)
+	update_camera_distance()
 
 	mouth_size = 60
 	eat_total_duration = 4.0417
@@ -290,6 +297,15 @@ func set_model(model_scene: PackedScene):
 
 	if not eat_hitbox.body_entered.is_connected(_on_eat_hitbox_body_entered):
 		eat_hitbox.body_entered.connect(_on_eat_hitbox_body_entered)
+
+func update_camera_distance() -> void:
+	if spring_arm == null:
+		return
+
+	if growth_stage >= 2:
+		spring_arm.spring_length = camera_distance_stage2
+	else:
+		spring_arm.spring_length = base_camera_distance
 		
 func change_hunger(amount: float) -> void:
 	if is_dead:

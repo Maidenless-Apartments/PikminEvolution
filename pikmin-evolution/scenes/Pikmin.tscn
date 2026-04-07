@@ -49,6 +49,7 @@ states/Walk/position = Vector2(540, 52)
 transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_46c36"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_gwng0"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_8wlty"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_m3ygv"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_2w56q")]
 
 [node name="CharacterBody3D" type="CharacterBody3D" groups=["eatables"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.020389572, 0)
 script = ExtResource("1_tn5nw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -70,7 +71,6 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0
 
 [node name="redPikminGLB" parent="visuals" instance=ExtResource("1_2i8xm")]
 transform = Transform3D(-1.4643315e-08, 0, -0.335, 0, 0.335, 0, 0.335, 0, -1.4643315e-08, 0, 0, 0)
-visible = false
 
 [node name="Skeleton3D" parent="visuals/redPikminGLB/Armature" index="0"]
 bones/0/position = Vector3(1.18431655e-14, 0.5980128, -56.038902)

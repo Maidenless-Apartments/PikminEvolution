@@ -6,6 +6,7 @@ extends Node3D
 @export var max_enemies_stage3: int = 200
 @export var spawn_interval: float = .5
 @export var spawn_interval3: float = .2
+@export var player_block_radius: float = 8.0
 @onready var spawn_points_stage1 = $"../spawnPoints".get_children()
 @onready var spawn_points_stage2_node = get_node_or_null("../spawnPoints2")
 @onready var spawn_points_stage3_node = get_node_or_null("../spawnPoints3")
@@ -44,8 +45,12 @@ func _on_spawn_timer_timeout():
 	
 	if spawn_points.is_empty():
 		return
-	
-	var point = spawn_points[randi() % spawn_points.size()]
+
+	var available_points: Array[Node3D] = _get_available_spawn_points()
+	if available_points.is_empty():
+		return
+
+	var point: Node3D = available_points[randi() % available_points.size()]
 	var enemy = enemy_scene.instantiate()
 	var random_skin_index = rng.randi_range(0, 2)
 	if enemy.has_method("apply_skin_by_index"):
@@ -116,6 +121,19 @@ func _roll_nature_for_stage(stage: int) -> int:
 	if roll < neutral_weight + scared_weight:
 		return 1
 	return 2
+
+func _get_available_spawn_points() -> Array[Node3D]:
+	var points: Array[Node3D] = []
+	for point in spawn_points:
+		if point is Node3D and not _is_player_near_spawn_point(point):
+			points.append(point)
+	return points
+
+func _is_player_near_spawn_point(point: Node3D) -> bool:
+	if player == null:
+		return false
+
+	return player.global_position.distance_to(point.global_position) <= player_block_radius
 
 func _on_enemy_removed():
 	current_enemies -= 1

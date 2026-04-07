@@ -75,13 +75,13 @@ enemy_scene = ExtResource("2_rwgxs")
 transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 0.088373184, 0.4347632, -6.8344717)
 
 [node name="Marker3D" type="Marker3D" parent="spawnPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7593307, 0.42139292, -2.7607331)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7593307, 0.16931736, -2.760733)
 
 [node name="Marker3D2" type="Marker3D" parent="spawnPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3264501, 0.42139292, -3.6017861)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3264501, 0.16670907, -3.601786)
 
 [node name="Marker3D3" type="Marker3D" parent="spawnPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0798607, 0.42139304, -1.9395752)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0798607, 0.17285717, -1.939575)
 
 [node name="gameManager" type="Node" parent="."]
 script = ExtResource("4_k0juu")
@@ -402,16 +402,16 @@ transform = Transform3D(58.346657, 0, -178.05914, 0, 187.803, 0, 178.05914, 0, 5
 [node name="spawnPoints2" type="Node3D" parent="."]
 
 [node name="Marker3D4" type="Marker3D" parent="spawnPoints2"]
-transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, -20.976967, 0.85614085, -72.44847)
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, -20.976967, 0.59717476, -72.44847)
 
 [node name="Marker3D5" type="Marker3D" parent="spawnPoints2"]
-transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 21.188858, 0.85614085, -72.44847)
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 21.188858, 0.6115198, -72.44847)
 
 [node name="Marker3D6" type="Marker3D" parent="spawnPoints2"]
-transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 36.16198, 0.85614085, -127.212425)
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 36.16198, 0.5992476, -127.212425)
 
 [node name="spawnPoints3" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -47.42006)
 
 [node name="Marker3D" type="Marker3D" parent="spawnPoints3"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.61778617, 0)
+transform = Transform3D(2.785, 0, 0, 0, 2.785, 0, 0, 0, 2.785, 0, 0.601174, 0)

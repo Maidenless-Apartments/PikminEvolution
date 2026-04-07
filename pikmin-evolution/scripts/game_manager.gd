@@ -33,7 +33,7 @@ func _on_player_died() -> void:
 	game_is_over = true
 	game_over.emit(false, "You starved.")
 	
-func _on_stage_changed() -> void:
+func _on_stage_changed(_stage: int) -> void:
 	time_left += 20
 	
 func end_level() -> void:

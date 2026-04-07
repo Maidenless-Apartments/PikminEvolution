@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://chw47exvd3uxs"]
+[gd_scene load_steps=21 format=3 uid="uid://chw47exvd3uxs"]
 
 [ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://ce3vx5j7swn8l" path="res://assets/models/TreeGLB.glb" id="6_qfnet"]
 [ext_resource type="PackedScene" uid="uid://jk050iuqf144" path="res://assets/models/rockGLB.glb" id="7_i7141"]
 [ext_resource type="PackedScene" uid="uid://yraymn5kojjf" path="res://assets/models/rockGLB2.glb" id="8_4mrxx"]
+[ext_resource type="PackedScene" uid="uid://buiy5vivgkuo" path="res://assets/models/benchGLB.glb" id="9_7r4gi"]
+[ext_resource type="PackedScene" uid="uid://b63pqoet4b5v" path="res://assets/models/grassTuftGLB.glb" id="10_w7kh3"]
 
 [sub_resource type="Environment" id="Environment_e5uuo"]
 
@@ -18,10 +20,6 @@ albedo_color = Color(0.11263616, 0.5351684, 0.29986113, 1)
 material = SubResource("StandardMaterial3D_71j4m")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qfnet"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_71j4m"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_qfnet"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qfnet"]
 transparency = 1
@@ -35,6 +33,8 @@ material = SubResource("StandardMaterial3D_qfnet")
 [sub_resource type="BoxShape3D" id="BoxShape3D_4mrxx"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4mrxx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w7kh3"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -138,42 +138,6 @@ offset_bottom = 602.0
 show_percentage = false
 
 [node name="environment" type="Node3D" parent="."]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3.162264, 0, 0, 0, 5.736, 0, 0, 0, 2.639948, -14.7345085, 3.6126268, -15.3676605)
-mesh = SubResource("BoxMesh_71j4m")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3.162264, 0, 0, 0, 5.736, 0, 0, 0, 2.639948, 27.3068, 3.6126268, -12.521744)
-mesh = SubResource("BoxMesh_71j4m")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3.162264, 0, 0, 0, 5.736, 0, 0, 0, 2.639948, 1.2503376, 3.6126268, -18.421078)
-mesh = SubResource("BoxMesh_71j4m")
-
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(52.902103, 0, 0, 0, 7.46, 0, 0, 0, 18.381483, 0, 15.605736, -60.413883)
-mesh = SubResource("BoxMesh_qfnet")
-
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3.162264, 0, 0, 0, 13.9706745, 0, 0, 0, 2.639948, -23.991728, 6.0582066, -53.17107)
-mesh = SubResource("BoxMesh_71j4m")
-
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3.162264, 0, 0, 0, 13.9706745, 0, 0, 0, 2.639948, -23.991728, 6.0582066, -67.30311)
-mesh = SubResource("BoxMesh_71j4m")
-
-[node name="MeshInstance3D7" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3.162264, 0, 0, 0, 13.9706745, 0, 0, 0, 2.639948, 23.768682, 6.0582066, -53.114143)
-mesh = SubResource("BoxMesh_71j4m")
-
-[node name="MeshInstance3D8" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(3.162264, 0, 0, 0, 13.9706745, 0, 0, 0, 2.639948, 23.32836, 6.0582066, -67.6463)
-mesh = SubResource("BoxMesh_71j4m")
-
-[node name="MeshInstance3D9" type="MeshInstance3D" parent="environment"]
-transform = Transform3D(52.902103, 0, 0, 0, 11.73903, 0, 0, 0, 2.5026379, 0, 25.260647, -68.05646)
-mesh = SubResource("BoxMesh_qfnet")
 
 [node name="MeshInstance3D10" type="MeshInstance3D" parent="environment"]
 transform = Transform3D(32.21742, 0, -23.142199, 0, 1, 0, 12.456222, 0, 59.85618, -11.617948, -0.056634903, -127.87254)
@@ -378,6 +342,63 @@ transform = Transform3D(150, 0, 0, 0, 150, 0, 0, 0, 150, 0, 0, 0)
 transform = Transform3D(-2.4268562e-07, -3.635, 0, 5.552, -1.588909e-07, 0, 0, 0, 4.779, -8.101604, 1.5605292, -0.7165494)
 shape = SubResource("CapsuleShape3D_4mrxx")
 
+[node name="bench" type="StaticBody3D" parent="environment"]
+transform = Transform3D(28.463995, 0, 0, 0, 21.663687, 0, 0, 0, 20.19, -3.829197, 0.39468145, -60.86367)
+
+[node name="benchGLB" parent="environment/bench" instance=ExtResource("9_7r4gi")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/bench"]
+transform = Transform3D(0.17698565, 0, 0, 0, 0.45299703, 0, 0, 0, 0.1482869, -0.5411459, 0.23726901, 0.35170746)
+shape = SubResource("BoxShape3D_w7kh3")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="environment/bench"]
+transform = Transform3D(0.17698565, 0, 0, 0, 0.45299685, 0, 0, 0, 0.17139842, -0.5411459, 0.23726895, -0.41727757)
+shape = SubResource("BoxShape3D_w7kh3")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="environment/bench"]
+transform = Transform3D(0.17698565, 0, 0, 0, 0.4529968, 0, 0, 0, 0.1482869, 0.78622085, 0.23726895, 0.313668)
+shape = SubResource("BoxShape3D_w7kh3")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="environment/bench"]
+transform = Transform3D(0.17698565, 0, 0, 0, 0.45299667, 0, 0, 0, 0.1713984, 0.78585684, 0.23726895, -0.4238236)
+shape = SubResource("BoxShape3D_w7kh3")
+
+[node name="grassTuftGLB" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(200, 0, 0, 0, 271.13242, 0, 0, 0, 200, 1.8995802, 0.5890856, -18.49172)
+
+[node name="grassTuftGLB2" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(77.8055, 0, -184.24522, 0, 271.1324, 0, 184.24522, 0, 77.8055, -15.4511, 0.5890856, -15.8072)
+
+[node name="grassTuftGLB3" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(181.82542, 0, 83.303764, 0, 271.1324, 0, -83.303764, 0, 181.82542, 28.91754, 0.5890856, -13.225599)
+
+[node name="grassTuftGLB4" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(187.375, 0, 0, 0, 187.803, 0, 0, 0, 187.375, -6.0747404, 0.53750014, -6.3692884)
+
+[node name="grassTuftGLB5" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-1.1969197, 0, 187.37119, 0, 187.803, 0, -187.37119, 0, -1.1969197, 10.124856, 0.53750014, -6.3692884)
+
+[node name="grassTuftGLB6" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-199.9979, 0, -0.9180339, 0, 271.1324, 0, 0.9180339, 0, -199.9979, 0.14530063, 0.5890856, -47.49886)
+
+[node name="grassTuftGLB7" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-199.9979, 0, -0.9180339, 0, 271.1324, 0, 0.9180339, 0, -199.9979, -21.001328, 0.5890856, -72.4617)
+
+[node name="grassTuftGLB8" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-199.9979, 0, -0.9180339, 0, 271.1324, 0, 0.9180339, 0, -199.9979, 21.129536, 0.5890856, -72.4617)
+
+[node name="grassTuftGLB9" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-199.9979, 0, -0.9180339, 0, 271.1324, 0, 0.9180339, 0, -199.9979, 36.387283, 0.5890856, -127.16901)
+
+[node name="grassTuftGLB10" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(187.375, 0, 0, 0, 187.803, 0, 0, 0, 187.375, -11.549, 0.53749824, -87.61104)
+
+[node name="grassTuftGLB11" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(148.36743, 0, -114.43992, 0, 187.803, 0, 114.43992, 0, 148.36743, 5.951996, 0.53749824, -80.90704)
+
+[node name="grassTuftGLB12" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(58.346657, 0, -178.05914, 0, 187.803, 0, 178.05914, 0, 58.346657, 23.12187, 0.53749824, -97.22427)
+
 [node name="spawnPoints2" type="Node3D" parent="."]
 
 [node name="Marker3D4" type="Marker3D" parent="spawnPoints2"]
@@ -393,3 +414,4 @@ transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 36.16198, 0.8
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -47.42006)
 
 [node name="Marker3D" type="Marker3D" parent="spawnPoints3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.61778617, 0)

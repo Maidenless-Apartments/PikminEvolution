@@ -13,25 +13,29 @@ extends Node3D
 var current_enemies: int = 0
 var spawn_points = []
 var base_max_enemies: int = 0
+var base_spawn_interval: float = 0.0
 var rng = RandomNumberGenerator.new()
 var num_spawned: int = 0
+var spawn_timer: Timer
+var current_stage: int = 0
 @onready var player = $"../CharacterBody3D"
 
 func _ready():
 	base_max_enemies = max_enemies
+	base_spawn_interval = spawn_interval
 	spawn_points = spawn_points_stage1
+	if player != null and not player.stage_changed.is_connected(_on_player_stage_changed):
+		player.stage_changed.connect(_on_player_stage_changed)
 	_update_spawn_settings_for_stage(_get_player_stage())
 
-	var timer = Timer.new()
-	timer.wait_time = spawn_interval
-	timer.autostart = true
-	timer.timeout.connect(_on_spawn_timer_timeout)
-	add_child(timer)
+	spawn_timer = Timer.new()
+	spawn_timer.wait_time = spawn_interval
+	spawn_timer.autostart = true
+	spawn_timer.timeout.connect(_on_spawn_timer_timeout)
+	add_child(spawn_timer)
 	rng.randomize()
 
 func _on_spawn_timer_timeout():
-	_update_spawn_settings_for_stage(_get_player_stage())
-
 	if current_enemies >= max_enemies:
 		return
 	
@@ -53,7 +57,7 @@ func _on_spawn_timer_timeout():
 		enemy.set_player_target(player)
 
 	if enemy.has_method("set_nature"):
-		enemy.set_nature(_roll_nature_for_stage(_get_player_stage()))
+		enemy.set_nature(_roll_nature_for_stage(current_stage))
 
 	current_enemies += 1
 	num_spawned += 1
@@ -66,22 +70,34 @@ func _get_player_stage() -> int:
 	return int(player.get("growth_stage"))
 
 func _update_spawn_settings_for_stage(stage: int) -> void:
+	current_stage = stage
 	if stage >= 2:
 		if spawn_points_stage3_node != null:
 			spawn_points = spawn_points_stage3_node.get_children()
 		max_enemies = max_enemies_stage3
 		spawn_interval = spawn_interval3
 		num_spawned = 0
+		if spawn_timer != null:
+			spawn_timer.wait_time = spawn_interval
 		return
 	if stage >= 1:
 		if spawn_points_stage2_node != null:
 			spawn_points = spawn_points_stage2_node.get_children()
 		max_enemies = max_enemies_stage2
+		spawn_interval = base_spawn_interval
 		num_spawned = 0
+		if spawn_timer != null:
+			spawn_timer.wait_time = spawn_interval
 		return
 
 	spawn_points = spawn_points_stage1
 	max_enemies = base_max_enemies
+	spawn_interval = base_spawn_interval
+	if spawn_timer != null:
+		spawn_timer.wait_time = spawn_interval
+
+func _on_player_stage_changed(stage: int) -> void:
+	_update_spawn_settings_for_stage(stage)
 
 func _roll_nature_for_stage(stage: int) -> int:
 	var neutral_weight: float = 0.65

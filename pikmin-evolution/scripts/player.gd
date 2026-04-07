@@ -48,8 +48,8 @@ var growth_stage := 0
 var anim_tree: AnimationTree
 var anim_state: AnimationNodeStateMachinePlayback
 var eat_hitbox: Area3D
-var threshold1: int = 2
-var threshold2: int = 5
+var threshold1: int = 20
+var threshold2: int = 60
 var hunger: float = 100.0
 
 func _ready() -> void:
@@ -268,7 +268,7 @@ func grow2():
 	can_roar = true
 	hunger_decay_per_second = 3.0
 	hunger_gain_on_eat = 12
-	stage_changed.emit(1)
+	stage_changed.emit(2)
 	
 func set_model(model_scene: PackedScene):
 	if model_scene == null:

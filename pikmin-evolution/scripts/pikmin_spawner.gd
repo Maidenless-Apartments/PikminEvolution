@@ -1,11 +1,11 @@
 extends Node3D
 
 @export var enemy_scene: PackedScene
-@export var max_enemies: int = 50
-@export var max_enemies_stage2: int = 100
-@export var max_enemies_stage3: int = 200
+@export var max_enemies: int = 35
+@export var max_enemies_stage2: int = 60
+@export var max_enemies_stage3: int = 100
 @export var spawn_interval: float = .5
-@export var spawn_interval3: float = .2
+@export var spawn_interval3: float = .3
 @export var player_block_radius: float = 8.0
 @onready var spawn_points_stage1 = $"../spawnPoints".get_children()
 @onready var spawn_points_stage2_node = get_node_or_null("../spawnPoints2")
@@ -82,6 +82,7 @@ func _update_spawn_settings_for_stage(stage: int) -> void:
 		max_enemies = max_enemies_stage3
 		spawn_interval = spawn_interval3
 		num_spawned = 0
+		player_block_radius = 16.0
 		if spawn_timer != null:
 			spawn_timer.wait_time = spawn_interval
 		return

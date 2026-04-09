@@ -39,6 +39,10 @@ transform = Transform3D(0.9992789, 0.025093677, -0.028495248, -0.012262563, 0.92
 
 [node name="roarTimer" type="Timer" parent="."]
 
+[node name="shakeHitboxTimer" type="Timer" parent="."]
+
+[node name="roarHitboxTimer" type="Timer" parent="."]
+
 [node name="eatCooldown" type="Timer" parent="."]
 
 [node name="shakeCooldown" type="Timer" parent="."]

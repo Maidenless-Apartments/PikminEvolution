@@ -1,13 +1,16 @@
-[gd_scene load_steps=21 format=3 uid="uid://chw47exvd3uxs"]
+[gd_scene load_steps=24 format=3 uid="uid://chw47exvd3uxs"]
 
 [ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
 [ext_resource type="Script" uid="uid://x35yd04tdwyq" path="res://scripts/pikmin_spawner.gd" id="3_4wyf3"]
 [ext_resource type="Script" uid="uid://c5n5tejvton5d" path="res://scripts/game_manager.gd" id="4_k0juu"]
 [ext_resource type="Script" uid="uid://dixfjhgs1ecf2" path="res://scripts/hud.gd" id="5_71j4m"]
+[ext_resource type="Texture2D" uid="uid://c8vx51k87fi4b" path="res://assets/eat_icon2.png" id="6_jhx03"]
 [ext_resource type="PackedScene" uid="uid://ce3vx5j7swn8l" path="res://assets/models/TreeGLB.glb" id="6_qfnet"]
 [ext_resource type="PackedScene" uid="uid://jk050iuqf144" path="res://assets/models/rockGLB.glb" id="7_i7141"]
+[ext_resource type="Texture2D" uid="uid://b4xc7oby76gqc" path="res://assets/shake_icon2.png" id="7_o8fc1"]
 [ext_resource type="PackedScene" uid="uid://yraymn5kojjf" path="res://assets/models/rockGLB2.glb" id="8_4mrxx"]
+[ext_resource type="Texture2D" uid="uid://c0w17av8opq41" path="res://assets/roar_icon2.png" id="8_xo05s"]
 [ext_resource type="PackedScene" uid="uid://buiy5vivgkuo" path="res://assets/models/benchGLB.glb" id="9_7r4gi"]
 [ext_resource type="PackedScene" uid="uid://b63pqoet4b5v" path="res://assets/models/grassTuftGLB.glb" id="10_w7kh3"]
 
@@ -131,11 +134,33 @@ offset_bottom = 362.0
 [node name="HungerBar" type="ProgressBar" parent="HUD/Control"]
 modulate = Color(0.7412862, 0.07741543, 0, 1)
 layout_mode = 0
-offset_left = 132.0
-offset_top = 575.0
-offset_right = 1031.0
-offset_bottom = 602.0
+offset_left = 45.0
+offset_top = 577.0
+offset_right = 816.0
+offset_bottom = 604.0
 show_percentage = false
+
+[node name="iconsContainer" type="HBoxContainer" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 849.0
+offset_top = 531.0
+offset_right = 1137.0
+offset_bottom = 641.0
+
+[node name="eatIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("6_jhx03")
+expand_mode = 3
+
+[node name="shakeIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("7_o8fc1")
+expand_mode = 3
+
+[node name="roarIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("8_xo05s")
+expand_mode = 3
 
 [node name="environment" type="Node3D" parent="."]
 

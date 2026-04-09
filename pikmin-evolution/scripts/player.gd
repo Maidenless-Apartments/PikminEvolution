@@ -4,6 +4,9 @@ signal hunger_changed(current, max_value)
 signal pikmin_eaten_changed(value)
 signal died
 signal stage_changed(stage)
+signal eating(value)
+signal shaking(value)
+signal roaring(value)
 
 @export var speed := 5
 @export var jump_velocity := 4.5
@@ -11,7 +14,11 @@ signal stage_changed(stage)
 @export var eat_hitbox_delay: float = 0.43
 @export var eat_hitbox_duration: float = 0.28
 @export var shake_total_duration: float = 1.6333
+@export var shake_hitbox_delay: float = 0.4
+@export var shake_hitbox_duration: float = 1
 @export var roar_total_duration: float = 3.0417
+@export var roar_hitbox_delay: float = 1.5
+@export var roar_hitbox_duration: float = 1.5
 @export var stage1_model: PackedScene
 @export var stage2_model: PackedScene
 @export var max_hunger: float = 100.0
@@ -29,6 +36,8 @@ var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravi
 @onready var hitbox_timer: Timer = $hitboxTimer
 @onready var shake_timer: Timer = $shakeTimer
 @onready var roar_timer: Timer = $roarTimer
+@onready var shake_hitbox_timer: Timer = $shakeHitboxTimer
+@onready var roar_hitbox_timer: Timer = $roarHitboxTimer
 @onready var collision = $CollisionShape3D
 @onready var shake_area: Area3D = $shakeArea
 @onready var roar_area: Area3D = $roarArea
@@ -40,6 +49,8 @@ var is_roaring: bool = false
 var can_shake: bool = false
 var can_roar: bool = false
 var eat_targets_hit: Array[Node] = []
+var shake_targets_hit: Array[Node] = []
+var roar_targets_hit: Array[Node] = []
 var mouth_size = 3
 var pitch := 0.0
 var pikmin_eaten: int = 0
@@ -65,14 +76,25 @@ func _ready() -> void:
 	hitbox_timer.one_shot = true
 	shake_timer.one_shot = true
 	roar_timer.one_shot = true
+	shake_hitbox_timer.one_shot = true
+	roar_hitbox_timer.one_shot = true
+	shake_area.monitoring = false
+	roar_area.monitoring = false
 
 	eat_timer.timeout.connect(_on_eat_timer_timeout)
 	hitbox_timer.timeout.connect(_on_hitbox_timer_timeout)
 	shake_timer.timeout.connect(_on_shake_timer_timeout)
 	roar_timer.timeout.connect(_on_roar_timer_timeout)
+	shake_hitbox_timer.timeout.connect(_on_shake_hitbox_timer_timeout)
+	roar_hitbox_timer.timeout.connect(_on_roar_hitbox_timer_timeout)
+
+	if not shake_area.body_entered.is_connected(_on_shake_area_body_entered):
+		shake_area.body_entered.connect(_on_shake_area_body_entered)
+	if not roar_area.body_entered.is_connected(_on_roar_area_body_entered):
+		roar_area.body_entered.connect(_on_roar_area_body_entered)
 	
 func _process(delta: float) -> void:
-	if is_dead:
+	if is_dead or is_roaring or is_shaking:
 		return
 	
 	change_hunger(-hunger_decay_per_second * delta)
@@ -149,6 +171,7 @@ func start_eat_attack() -> void:
 	is_attacking = true
 	eat_targets_hit.clear()
 	anim_state.travel("Eat")
+	eating.emit(1)
 	
 	eat_timer.start(eat_total_duration)
 	
@@ -161,6 +184,7 @@ func end_eat_attack() -> void:
 	is_attacking = false
 	eat_hitbox.monitoring = false
 	anim_state.travel("Idle")
+	eating.emit(0)
 	
 func enable_eat_hitbox() -> void:
 	eat_targets_hit.clear()
@@ -176,8 +200,7 @@ func _on_hitbox_timer_timeout() -> void:
 	disable_eat_hitbox()
 
 func _on_eat_timer_timeout() -> void:
-	is_attacking = false
-	disable_eat_hitbox()
+	end_eat_attack()
 	check_growth()
 	
 func _on_eat_hitbox_body_entered(body: Node3D) -> void:
@@ -199,18 +222,47 @@ func _try_hit_body(body: Node) -> void:
 		
 func start_shake() -> void:
 	is_shaking = true
+	shake_targets_hit.clear()
 	anim_state.travel("Shake")
-	
-	await get_tree().create_timer(0.3).timeout
-	if is_shaking:
-		do_shake_effect()
-	
+	shaking.emit(1)
+
 	shake_timer.start(shake_total_duration)
+
+	await get_tree().create_timer(shake_hitbox_delay).timeout
+	if is_shaking:
+		enable_shake_hitbox()
+		shake_hitbox_timer.start(shake_hitbox_duration)
 	
 func do_shake_effect() -> void:
 	for body in shake_area.get_overlapping_bodies():
-		if body.is_in_group("eatables") and body.has_method("repel_from"):
-			body.repel_from(global_position)
+		_try_shake_body(body)
+
+func enable_shake_hitbox() -> void:
+	shake_targets_hit.clear()
+	shake_area.monitoring = true
+
+	for body in shake_area.get_overlapping_bodies():
+		_try_shake_body(body)
+
+func disable_shake_hitbox() -> void:
+	shake_area.monitoring = false
+
+func _on_shake_hitbox_timer_timeout() -> void:
+	disable_shake_hitbox()
+
+func _on_shake_area_body_entered(body: Node3D) -> void:
+	_try_shake_body(body)
+
+func _try_shake_body(body: Node) -> void:
+	if not is_shaking:
+		return
+
+	if body in shake_targets_hit:
+		return
+
+	if body.is_in_group("eatables") and body.has_method("repel_from"):
+		body.repel_from(global_position)
+		shake_targets_hit.append(body)
 	
 func _on_shake_timer_timeout() -> void:
 	end_shake()
@@ -220,26 +272,59 @@ func _on_roar_timer_timeout() -> void:
 	
 func end_shake() -> void:
 	is_shaking = false
+	disable_shake_hitbox()
 	anim_state.travel("Idle")
+	shaking.emit(0)
 	
 func start_roar() -> void:
 	is_roaring = true
+	roar_targets_hit.clear()
 	anim_state.travel("Roar")
-	
-	await get_tree().create_timer(0.5).timeout
-	if is_roaring:
-		do_roar_effect()
-	
+	roaring.emit(1)
+
 	roar_timer.start(roar_total_duration)
+
+	await get_tree().create_timer(roar_hitbox_delay).timeout
+	if is_roaring:
+		enable_roar_hitbox()
+		roar_hitbox_timer.start(roar_hitbox_duration)
 	
 func do_roar_effect() -> void:
 	for body in roar_area.get_overlapping_bodies():
-		if body.is_in_group("eatables") and body.has_method("freeze_for"):
-			body.freeze_for(6.0)
+		_try_roar_body(body)
+
+func enable_roar_hitbox() -> void:
+	roar_targets_hit.clear()
+	roar_area.monitoring = true
+
+	for body in roar_area.get_overlapping_bodies():
+		_try_roar_body(body)
+
+func disable_roar_hitbox() -> void:
+	roar_area.monitoring = false
+
+func _on_roar_hitbox_timer_timeout() -> void:
+	disable_roar_hitbox()
+
+func _on_roar_area_body_entered(body: Node3D) -> void:
+	_try_roar_body(body)
+
+func _try_roar_body(body: Node) -> void:
+	if not is_roaring:
+		return
+
+	if body in roar_targets_hit:
+		return
+
+	if body.is_in_group("eatables") and body.has_method("freeze_for"):
+		body.freeze_for(12.0)
+		roar_targets_hit.append(body)
 			
 func end_roar() -> void:
 	is_roaring = false
+	disable_roar_hitbox()
 	anim_state.travel("Idle")
+	roaring.emit(0)
 	
 func check_growth():
 	if not grown_up and pikmin_eaten >= threshold1:
@@ -272,6 +357,9 @@ func grow2():
 	eat_total_duration = 4.0417
 	eat_hitbox_delay = 1.23
 	eat_hitbox_duration = 2.57
+	shake_total_duration = 2.0417
+	shake_hitbox_delay = 1.7
+	shake_hitbox_duration = 0.3
 	can_roar = true
 	hunger_decay_per_second = 3.0
 	hunger_gain_on_eat = 12

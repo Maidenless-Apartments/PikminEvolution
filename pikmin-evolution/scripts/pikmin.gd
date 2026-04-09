@@ -5,7 +5,7 @@ extends CharacterBody3D
 @export var min_wander_time: float = 1.5
 @export var max_wander_time: float = 4.0
 @export var sight_range: float = 8.0
-@export var scared_move_speed: float = 1.1
+@export var scared_move_speed: float = 1
 @export var aggressive_move_speed: float = 1.4
 @export var flee_duration: float = 1.2
 @export var attack_range: float = 1.1
@@ -172,7 +172,7 @@ func _update_behavior(delta: float) -> void:
 				wander_direction = to_player.normalized()
 
 func _try_attack_player() -> void:
-	if attack_cooldown_left > 0.0:
+	if attack_cooldown_left > 0.0 or is_frozen:
 		return
 
 	if player_target != null and player_target.has_method("take_damage"):
@@ -211,7 +211,7 @@ func repel_from(source_pos: Vector3) -> void:
 	var dir = global_position - source_pos
 	dir.y = 0
 	dir = dir.normalized()
-	knockback_velocity = dir * 8.0
+	knockback_velocity = dir * 16.0
 	
 func freeze_for(duration: float) -> void:
 	if is_frozen:

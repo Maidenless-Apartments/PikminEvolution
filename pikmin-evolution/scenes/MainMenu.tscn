@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhtayk756iokw"]
+
+[ext_resource type="Script" uid="uid://df7tjhy4gavxd" path="res://scripts/main_menu.gd" id="1_0ykhv"]
+[ext_resource type="Texture2D" uid="uid://brs72rkcr3hoi" path="res://assets/pikmin_evolution.png" id="2_2wh52"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0ykhv")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -113.0
+offset_top = -38.0
+offset_right = 1295.0
+offset_bottom = 730.0
+texture = ExtResource("2_2wh52")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 113.0
+offset_top = 549.0
+offset_right = 1064.0
+offset_bottom = 625.0
+alignment = 1
+
+[node name="playButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "      Play      "
+
+[node name="levelButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "Select Level (Coming Soon)"
+
+[node name="settingsButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "      Settings      "
+
+[node name="quitButton" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+text = "      Quit      "

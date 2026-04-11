@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="PikminEvolution"
-run/main_scene="uid://chw47exvd3uxs"
+run/main_scene="uid://bhtayk756iokw"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 

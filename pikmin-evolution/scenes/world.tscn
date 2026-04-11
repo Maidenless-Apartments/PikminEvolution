@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://chw47exvd3uxs"]
+[gd_scene load_steps=29 format=3 uid="uid://chw47exvd3uxs"]
 
 [ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
@@ -12,9 +12,19 @@
 [ext_resource type="PackedScene" uid="uid://yraymn5kojjf" path="res://assets/models/rockGLB2.glb" id="8_4mrxx"]
 [ext_resource type="Texture2D" uid="uid://c0w17av8opq41" path="res://assets/roar_icon2.png" id="8_xo05s"]
 [ext_resource type="PackedScene" uid="uid://buiy5vivgkuo" path="res://assets/models/benchGLB.glb" id="9_7r4gi"]
+[ext_resource type="Texture2D" uid="uid://p85upac2cs58" path="res://assets/rt_icon.png" id="9_dss4m"]
+[ext_resource type="Texture2D" uid="uid://ct1xodo5ypmgf" path="res://assets/lt_icon.png" id="10_7t5mc"]
 [ext_resource type="PackedScene" uid="uid://b63pqoet4b5v" path="res://assets/models/grassTuftGLB.glb" id="10_w7kh3"]
+[ext_resource type="Texture2D" uid="uid://bt8hr2oiseuxa" path="res://assets/a_icon.png" id="11_lakw3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jhx03"]
+
+[sub_resource type="Sky" id="Sky_o8fc1"]
+sky_material = SubResource("ProceduralSkyMaterial_jhx03")
 
 [sub_resource type="Environment" id="Environment_e5uuo"]
+background_mode = 2
+sky = SubResource("Sky_o8fc1")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71j4m"]
 albedo_color = Color(0.11263616, 0.5351684, 0.29986113, 1)
@@ -161,6 +171,33 @@ expand_mode = 3
 layout_mode = 2
 texture = ExtResource("8_xo05s")
 expand_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 885.0
+offset_top = 492.0
+offset_right = 923.0
+offset_bottom = 525.0
+texture = ExtResource("9_dss4m")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 981.0
+offset_top = 494.0
+offset_right = 1016.0
+offset_bottom = 527.0
+texture = ExtResource("10_7t5mc")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 1069.0
+offset_top = 496.0
+offset_right = 1102.0
+offset_bottom = 524.0
+texture = ExtResource("11_lakw3")
+expand_mode = 1
 
 [node name="environment" type="Node3D" parent="."]
 

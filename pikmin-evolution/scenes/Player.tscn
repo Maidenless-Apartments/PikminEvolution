@@ -1,10 +1,33 @@
-[gd_scene load_steps=7 format=3 uid="uid://b06278fk4rc7j"]
+[gd_scene load_steps=10 format=3 uid="uid://b06278fk4rc7j"]
 
 [ext_resource type="Script" uid="uid://dqbyb8fwwepuy" path="res://scripts/player.gd" id="1_p0vlq"]
 [ext_resource type="PackedScene" uid="uid://c6ymi0qch4kdy" path="res://scenes/Bulborb.tscn" id="2_3li8b"]
 [ext_resource type="PackedScene" uid="uid://cd1s0uwecy3k7" path="res://scenes/Bulblax.tscn" id="3_mdl7e"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3li8b"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_growth"]
+emission_shape = 1
+emission_sphere_radius = 0.9
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 1.2
+initial_velocity_max = 3.6
+gravity = Vector3(0, -2, 0)
+scale_min = 0.0
+scale_max = 3.0
+color = Color(1, 0.329412, 0.101961, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_growth_particles"]
+vertex_color_use_as_albedo = true
+emission_enabled = true
+emission = Color(1, 0.537255, 0.184314, 1)
+emission_energy_multiplier = 0.65
+
+[sub_resource type="SphereMesh" id="SphereMesh_growth"]
+material = SubResource("StandardMaterial3D_growth_particles")
+radius = 0.08
+height = 0.16
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_mdl7e"]
 
@@ -30,6 +53,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6875003, 0)
 transform = Transform3D(0.9992789, 0.025093677, -0.028495248, -0.012262563, 0.92355186, 0.3832775, 0.03593468, -0.38265175, 0.9231936, 0.027750015, 0.37752014, 1.1689757)
 
 [node name="visualRoot" type="Node3D" parent="."]
+
+[node name="growthParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, 0)
+emitting = false
+amount = 90
+lifetime = 0.9
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_growth")
+draw_pass_1 = SubResource("SphereMesh_growth")
 
 [node name="eatTimer" type="Timer" parent="."]
 

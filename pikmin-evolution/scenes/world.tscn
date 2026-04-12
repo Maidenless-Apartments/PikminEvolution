@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://chw47exvd3uxs"]
+[gd_scene load_steps=32 format=3 uid="uid://chw47exvd3uxs"]
 
 [ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
 [ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://ct1xodo5ypmgf" path="res://assets/lt_icon.png" id="10_7t5mc"]
 [ext_resource type="PackedScene" uid="uid://b63pqoet4b5v" path="res://assets/models/grassTuftGLB.glb" id="10_w7kh3"]
 [ext_resource type="Texture2D" uid="uid://bt8hr2oiseuxa" path="res://assets/a_icon.png" id="11_lakw3"]
+[ext_resource type="AudioStream" path="res://assets/audio/084 Awakening Wood (Olimar, Battle) .mp3" id="12_lvlmusic"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jhx03"]
 
@@ -33,6 +34,23 @@ albedo_color = Color(0.11263616, 0.5351684, 0.29986113, 1)
 material = SubResource("StandardMaterial3D_71j4m")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_qfnet"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dss4m"]
+outline_color = Color(0.9411765, 0.13333334, 0.23921569, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_endgame_panel"]
+bg_color = Color(0.0705882, 0.0745098, 0.0901961, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.862745, 0.705882, 0.294118, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 10
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qfnet"]
 transparency = 1
@@ -56,6 +74,11 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_e5uuo")
+
+[node name="LevelMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_lvlmusic")
+autoplay = true
+volume_db = -10.0
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(0.695, 0, 0, 0, 0.695, 0, 0, 0, 0.695, 0, -0.1, -47.248657)
@@ -140,6 +163,81 @@ offset_left = 401.0
 offset_top = 160.0
 offset_right = 668.0
 offset_bottom = 362.0
+label_settings = SubResource("LabelSettings_dss4m")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndGameBackdrop" type="ColorRect" parent="HUD/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.52)
+
+[node name="EndGamePanel" type="PanelContainer" parent="HUD/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -190.0
+offset_right = 280.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_endgame_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/Control/EndGamePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control/EndGamePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "You Win!"
+horizontal_alignment = 1
+
+[node name="ReasonLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reason"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Pikmin Eaten: 0"
+horizontal_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="PlayAgainButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Play Again"
+
+[node name="MainMenuButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Back To Main Menu"
 
 [node name="HungerBar" type="ProgressBar" parent="HUD/Control"]
 modulate = Color(0.7412862, 0.07741543, 0, 1)

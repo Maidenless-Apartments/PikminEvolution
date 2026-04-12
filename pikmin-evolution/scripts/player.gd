@@ -41,6 +41,7 @@ var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravi
 @onready var collision = $CollisionShape3D
 @onready var shake_area: Area3D = $shakeArea
 @onready var roar_area: Area3D = $roarArea
+@onready var growth_particles: GPUParticles3D = $growthParticles
 
 var is_dead: bool = false
 var is_attacking: bool = false
@@ -61,8 +62,8 @@ var growth_stage := 0
 var anim_tree: AnimationTree
 var anim_state: AnimationNodeStateMachinePlayback
 var eat_hitbox: Area3D
-var threshold1: int = 20
-var threshold2: int = 60
+var threshold1: int = 2
+var threshold2: int = 6
 var hunger: float = 100.0
 var base_camera_distance: float = 0.0
 
@@ -337,6 +338,7 @@ func grow():
 	growth_stage = 1
 	scale = Vector3(2.0, 2.0, 2.0)
 	update_camera_distance()
+	play_growth_particles(1.0)
 
 	var hit = eat_hitbox
 	hit.scale = Vector3(2.0, 2.0, 2.0)
@@ -352,6 +354,7 @@ func grow2():
 	set_model(stage2_model)
 	scale = Vector3(4.0, 4.0, 4.0)
 	update_camera_distance()
+	play_growth_particles(1.6)
 
 	mouth_size = 60
 	eat_total_duration = 4.0417
@@ -364,6 +367,14 @@ func grow2():
 	hunger_decay_per_second = 3.0
 	hunger_gain_on_eat = 12
 	stage_changed.emit(2)
+
+func play_growth_particles(multiplier: float) -> void:
+	if growth_particles == null:
+		return
+
+	growth_particles.scale = Vector3.ONE * multiplier
+	growth_particles.restart()
+	growth_particles.emitting = true
 	
 func set_model(model_scene: PackedScene):
 	if model_scene == null:

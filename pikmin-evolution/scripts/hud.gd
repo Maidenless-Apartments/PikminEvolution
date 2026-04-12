@@ -8,11 +8,19 @@ extends Control
 @onready var eat_icon: TextureRect = $iconsContainer/eatIcon
 @onready var shake_icon: TextureRect = $iconsContainer/shakeIcon
 @onready var roar_icon: TextureRect = $iconsContainer/roarIcon
+@onready var end_game_backdrop: ColorRect = $EndGameBackdrop
+@onready var end_game_panel: PanelContainer = $EndGamePanel
+@onready var end_game_title: Label = $EndGamePanel/MarginContainer/VBoxContainer/TitleLabel
+@onready var end_game_reason: Label = $EndGamePanel/MarginContainer/VBoxContainer/ReasonLabel
+@onready var end_game_score: Label = $EndGamePanel/MarginContainer/VBoxContainer/ScoreLabel
+@onready var play_again_button: Button = $EndGamePanel/MarginContainer/VBoxContainer/ButtonRow/PlayAgainButton
+@onready var main_menu_button: Button = $EndGamePanel/MarginContainer/VBoxContainer/ButtonRow/MainMenuButton
 
 @onready var player = $"../../CharacterBody3D"
 @onready var game_manager = $"../../gameManager"
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 	player.hunger_changed.connect(_on_hunger_changed)
 	player.pikmin_eaten_changed.connect(_on_pikmin_eaten_changed)
 	player.stage_changed.connect(_on_stage_changed)
@@ -21,10 +29,20 @@ func _ready() -> void:
 	player.roaring.connect(_on_roaring_changed)
 	game_manager.time_changed.connect(_on_time_changed)
 	game_manager.game_over.connect(_on_game_over)
+	play_again_button.pressed.connect(_on_play_again_pressed)
+	main_menu_button.pressed.connect(_on_main_menu_pressed)
 	
 	eat_icon.self_modulate = Color(1,1,1,1)
 	shake_icon.self_modulate = Color(0.45, 0.45, 0.45, 1.0)
 	roar_icon.self_modulate = Color(0.45, 0.45, 0.45, 1.0)
+	end_game_backdrop.visible = false
+	end_game_panel.visible = false
+
+	for button: Button in [play_again_button, main_menu_button]:
+		button.focus_mode = Control.FOCUS_ALL
+
+	play_again_button.focus_neighbor_right = main_menu_button.get_path()
+	main_menu_button.focus_neighbor_left = play_again_button.get_path()
 	
 	_on_hunger_changed(player.hunger, player.max_hunger)
 	_on_pikmin_eaten_changed(player.pikmin_eaten)
@@ -52,6 +70,13 @@ func _on_time_changed(time_left: float) -> void:
 func _on_game_over(won: bool, reason: String) -> void:
 	message_label.text = reason
 	message_label.visible = true
+	end_game_title.text = "You Win!" if won else "You Lose"
+	end_game_reason.text = reason
+	end_game_score.text = "Pikmin Eaten: " + str(player.pikmin_eaten)
+	end_game_backdrop.visible = true
+	end_game_panel.visible = true
+	get_tree().paused = true
+	play_again_button.grab_focus()
 	
 func _on_eating_changed(value: int) -> void:
 	if value == 1:
@@ -70,3 +95,24 @@ func _on_roaring_changed(value: int) -> void:
 		roar_icon.self_modulate = Color(0.45, 0.45, 0.45, 1.0)
 	else:
 		roar_icon.self_modulate = Color(1,1,1,1)
+
+func _on_play_again_pressed() -> void:
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+func _on_main_menu_pressed() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not end_game_panel.visible:
+		return
+
+	if event.is_action_pressed("roar"):
+		var viewport: Viewport = get_viewport()
+		if viewport == null:
+			return
+
+		var focused_button := viewport.gui_get_focus_owner() as BaseButton
+		if focused_button != null:
+			focused_button.emit_signal("pressed")

@@ -49,11 +49,11 @@ states/Walk/position = Vector2(540, 52)
 transitions = ["Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_46c36"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_gwng0"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_8wlty"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_m3ygv"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_2w56q")]
 
 [node name="CharacterBody3D" type="CharacterBody3D" groups=["eatables"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.020389572, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00830178, 0)
 script = ExtResource("1_tn5nw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.24, 0, 0, 0, 0.24, 0, 0, 0, 0.24, 0, 0.19507176, 0)
+transform = Transform3D(0.24, 0, 0, 0, 0.24, 0, 0, 0, 0.24, 0, 0.12, 0)
 shape = SubResource("BoxShape3D_tn5nw")
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
@@ -67,10 +67,11 @@ parameters/conditions/is_walking = false
 [node name="Timer" type="Timer" parent="."]
 
 [node name="visuals" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0.03, 0)
 
 [node name="redPikminGLB" parent="visuals" instance=ExtResource("1_2i8xm")]
-transform = Transform3D(-1.4643315e-08, 0, -0.335, 0, 0.335, 0, 0.335, 0, -1.4643315e-08, 0, 0, 0)
+transform = Transform3D(-1.4643314e-08, 0, -0.335, 0, 0.335, 0, 0.335, 0, -1.4643314e-08, 0, -0.028945543, 0)
+visible = false
 
 [node name="Skeleton3D" parent="visuals/redPikminGLB/Armature" index="0"]
 bones/0/position = Vector3(1.18431655e-14, 0.5980128, -56.038902)
@@ -81,11 +82,11 @@ bones/3/rotation = Quaternion(-0.06307166, 0.70428836, 0.06307166, 0.70428824)
 bones/4/rotation = Quaternion(-0.06307164, 0.70428836, 0.06307167, 0.70428824)
 
 [node name="yellowPikminGLB" parent="visuals" instance=ExtResource("3_2hplc")]
-transform = Transform3D(-1.4861872e-08, 0, -0.34, 0, 0.34, 0, 0.34, 0, -1.4861872e-08, 0, 0, 0)
+transform = Transform3D(-1.4861872e-08, 0, -0.34, 0, 0.34, 0, 0.34, 0, -1.4861872e-08, 0, -0.027657382, 0)
 visible = false
 
 [node name="bluePikminGLB" parent="visuals" instance=ExtResource("4_ymhot")]
-transform = Transform3D(-1.4861872e-08, 0, -0.34, 0, 0.34, 0, 0.34, 0, -1.4861872e-08, 0, 0, 0)
+transform = Transform3D(-1.4861872e-08, 0, -0.34, 0, 0.34, 0, 0.34, 0, -1.4861872e-08, 0, -0.028806992, 0)
 visible = false
 
 [node name="group3" parent="visuals/bluePikminGLB" index="0"]

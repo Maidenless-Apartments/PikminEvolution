@@ -39,7 +39,7 @@ stage1_model = ExtResource("2_3li8b")
 stage2_model = ExtResource("3_mdl7e")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.725, 0, 0, 0, 0.725, 0, 0, 0, 0.725, 0, 0.3350759, -0.06961465)
+transform = Transform3D(0.725, 0, 0, 0, 0.725, 0, 0, 0, 0.725, 0, 0.3625, -0.06961465)
 shape = SubResource("SphereShape3D_3li8b")
 
 [node name="cameraPivot" type="Node3D" parent="."]

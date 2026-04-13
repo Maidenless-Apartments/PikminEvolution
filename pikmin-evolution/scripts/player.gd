@@ -19,6 +19,7 @@ const WALK_FOOTSTEP_SOUNDS = [
 const EAT_SOUND = preload("res://assets/audio/player/eating/Creature_Hiss_low_deep_015.wav")
 const SHAKE_SOUND = preload("res://assets/audio/player/shaking/Creature_Hiss_low_deep_012.wav")
 const ROAR_SOUND = preload("res://assets/audio/player/roaring/Creature_Roar_low_deep_003.wav")
+const UPGRADE_SOUND = preload("res://assets/audio/player/upgrade2.mp3")
 const PIKMIN_CRY_SOUND = preload("res://assets/audio/pikmin/cry4.mp3")
 
 @export var speed := 5
@@ -81,8 +82,8 @@ var growth_stage := 0
 var anim_tree: AnimationTree
 var anim_state: AnimationNodeStateMachinePlayback
 var eat_hitbox: Area3D
-var threshold1: int = 20
-var threshold2: int = 60
+var threshold1: int = 2
+var threshold2: int = 6
 var hunger: float = 100.0
 var base_camera_distance: float = 0.0
 var base_camera_height: float = 0.0
@@ -431,6 +432,7 @@ func grow():
 	update_camera_distance()
 	update_ability_hitbox_scale()
 	play_growth_particles(1.0)
+	play_action_sound(UPGRADE_SOUND)
 
 	mouth_size = 10
 	can_shake = true
@@ -446,6 +448,7 @@ func grow2():
 	update_camera_distance()
 	update_ability_hitbox_scale()
 	play_growth_particles(1.6)
+	play_action_sound(UPGRADE_SOUND)
 
 	mouth_size = 60
 	eat_total_duration = 4.0417

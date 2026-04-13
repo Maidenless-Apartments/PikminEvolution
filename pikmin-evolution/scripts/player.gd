@@ -8,6 +8,19 @@ signal eating(value)
 signal shaking(value)
 signal roaring(value)
 
+const RUN_FOOTSTEP_SOUNDS = [
+	preload("res://assets/audio/player/walking/Dirt Run 1.ogg"),
+	preload("res://assets/audio/player/walking/Dirt Run 2.ogg")
+]
+const WALK_FOOTSTEP_SOUNDS = [
+	preload("res://assets/audio/player/walking/Dirt Walk 1.ogg"),
+	preload("res://assets/audio/player/walking/Dirt Walk 2.ogg")
+]
+const EAT_SOUND = preload("res://assets/audio/player/eating/Creature_Hiss_low_deep_015.wav")
+const SHAKE_SOUND = preload("res://assets/audio/player/shaking/Creature_Hiss_low_deep_012.wav")
+const ROAR_SOUND = preload("res://assets/audio/player/roaring/Creature_Roar_low_deep_003.wav")
+const PIKMIN_CRY_SOUND = preload("res://assets/audio/pikmin/cry4.mp3")
+
 @export var speed := 5
 @export var jump_velocity := 4.5
 @export var eat_total_duration: float = 1.633
@@ -29,6 +42,8 @@ var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravi
 @export var camera_pitch_speed := 2.0
 @export var camera_distance_stage1_multiplier: float = 2.0
 @export var camera_distance_stage2_multiplier: float = 6.0
+@export var ability_radius_stage1_multiplier: float = 2.0
+@export var ability_radius_stage2_multiplier: float = 4.0
 @onready var camera_pivot = $cameraPivot
 @onready var pitch_pivot: Node3D = $cameraPivot/pitchPivot
 @onready var spring_arm: SpringArm3D = $cameraPivot/pitchPivot/SpringArm3D
@@ -42,7 +57,10 @@ var gravity: float = float(ProjectSettings.get_setting("physics/3d/default_gravi
 @onready var collision = $CollisionShape3D
 @onready var shake_area: Area3D = $shakeArea
 @onready var roar_area: Area3D = $roarArea
+@onready var shake_collision_shape: CollisionShape3D = $shakeArea/CollisionShape3D
 @onready var growth_particles: GPUParticles3D = $growthParticles
+@onready var movement_audio_player: AudioStreamPlayer3D = $movementAudioPlayer
+@onready var action_audio_player: AudioStreamPlayer3D = $actionAudioPlayer
 
 var is_dead: bool = false
 var is_attacking: bool = false
@@ -84,6 +102,7 @@ func _ready() -> void:
 	roar_hitbox_timer.one_shot = true
 	shake_area.monitoring = false
 	roar_area.monitoring = false
+	update_ability_hitbox_scale()
 
 	eat_timer.timeout.connect(_on_eat_timer_timeout)
 	hitbox_timer.timeout.connect(_on_hitbox_timer_timeout)
@@ -96,6 +115,12 @@ func _ready() -> void:
 		shake_area.body_entered.connect(_on_shake_area_body_entered)
 	if not roar_area.body_entered.is_connected(_on_roar_area_body_entered):
 		roar_area.body_entered.connect(_on_roar_area_body_entered)
+
+	if not movement_audio_player.finished.is_connected(_on_movement_audio_finished):
+		movement_audio_player.finished.connect(_on_movement_audio_finished)
+
+	movement_audio_player.volume_db = 3.0
+	action_audio_player.volume_db = 3.0
 	
 func _process(delta: float) -> void:
 	if is_dead or is_roaring or is_shaking:
@@ -170,6 +195,13 @@ func _physics_process(delta):
 	else:
 		anim_state.travel("Idle")
 
+	if is_shaking and shake_area.monitoring:
+		do_shake_effect()
+	if is_roaring and roar_area.monitoring:
+		do_roar_effect()
+
+	update_movement_audio(_should_play_movement_audio())
+
 	move_and_slide()
 		
 func start_eat_attack() -> void:
@@ -194,6 +226,7 @@ func end_eat_attack() -> void:
 func enable_eat_hitbox() -> void:
 	eat_targets_hit.clear()
 	eat_hitbox.monitoring = true
+	play_action_sound(EAT_SOUND)
 	
 	for body in eat_hitbox.get_overlapping_bodies():
 		_try_hit_body(body)
@@ -219,11 +252,28 @@ func _try_hit_body(body: Node) -> void:
 		return
 		
 	if body.is_in_group("eatables"):
+		play_pikmin_cry_sound()
 		body.die()
 		eat_targets_hit.append(body)
 		pikmin_eaten += 1
 		pikmin_eaten_changed.emit(pikmin_eaten)
 		change_hunger(hunger_gain_on_eat)
+
+func play_pikmin_cry_sound() -> void:
+	if PIKMIN_CRY_SOUND == null:
+		return
+
+	var scene_root := get_tree().current_scene
+	if scene_root == null:
+		return
+
+	var cry_audio_player := AudioStreamPlayer3D.new()
+	cry_audio_player.stream = PIKMIN_CRY_SOUND
+	cry_audio_player.volume_db = 3.0
+	scene_root.add_child(cry_audio_player)
+	cry_audio_player.global_position = global_position
+	cry_audio_player.finished.connect(cry_audio_player.queue_free)
+	cry_audio_player.play()
 		
 func start_shake() -> void:
 	is_shaking = true
@@ -239,14 +289,15 @@ func start_shake() -> void:
 		shake_hitbox_timer.start(shake_hitbox_duration)
 	
 func do_shake_effect() -> void:
-	for body in shake_area.get_overlapping_bodies():
+	for body in _get_shake_targets_in_range():
 		_try_shake_body(body)
 
 func enable_shake_hitbox() -> void:
 	shake_targets_hit.clear()
 	shake_area.monitoring = true
+	play_action_sound(SHAKE_SOUND)
 
-	for body in shake_area.get_overlapping_bodies():
+	for body in _get_shake_targets_in_range():
 		_try_shake_body(body)
 
 func disable_shake_hitbox() -> void:
@@ -268,6 +319,41 @@ func _try_shake_body(body: Node) -> void:
 	if body.is_in_group("eatables") and body.has_method("repel_from"):
 		body.repel_from(global_position)
 		shake_targets_hit.append(body)
+
+func _get_shake_targets_in_range() -> Array[Node]:
+	var targets: Array[Node] = []
+
+	for body in shake_area.get_overlapping_bodies():
+		if body not in targets:
+			targets.append(body)
+
+	var shake_radius := _get_shake_effect_radius()
+	for candidate in get_tree().get_nodes_in_group("eatables"):
+		if not (candidate is Node3D):
+			continue
+
+		var node := candidate as Node3D
+		if node.global_position.distance_to(global_position) <= shake_radius and node not in targets:
+			targets.append(node)
+
+	return targets
+
+func _get_shake_effect_radius() -> float:
+	if shake_collision_shape == null:
+		return 2.0
+
+	var sphere_shape := shake_collision_shape.shape as SphereShape3D
+	if sphere_shape == null:
+		return 2.0
+
+	var local_scale := shake_collision_shape.transform.basis.get_scale()
+	var area_scale := shake_area.global_transform.basis.get_scale()
+	var sx = abs(local_scale.x * area_scale.x)
+	var sy = abs(local_scale.y * area_scale.y)
+	var sz = abs(local_scale.z * area_scale.z)
+	var max_scale = max(sx, max(sy, sz))
+
+	return sphere_shape.radius * max_scale
 	
 func _on_shake_timer_timeout() -> void:
 	end_shake()
@@ -301,6 +387,7 @@ func do_roar_effect() -> void:
 func enable_roar_hitbox() -> void:
 	roar_targets_hit.clear()
 	roar_area.monitoring = true
+	play_action_sound(ROAR_SOUND)
 
 	for body in roar_area.get_overlapping_bodies():
 		_try_roar_body(body)
@@ -342,6 +429,7 @@ func grow():
 	growth_stage = 1
 	visual_root.scale = Vector3(2.0, 2.0, 2.0)
 	update_camera_distance()
+	update_ability_hitbox_scale()
 	play_growth_particles(1.0)
 
 	mouth_size = 10
@@ -356,6 +444,7 @@ func grow2():
 	set_model(stage2_model)
 	visual_root.scale = Vector3(4.0, 4.0, 4.0)
 	update_camera_distance()
+	update_ability_hitbox_scale()
 	play_growth_particles(1.6)
 
 	mouth_size = 60
@@ -411,6 +500,16 @@ func update_camera_distance() -> void:
 
 	spring_arm.spring_length = base_camera_distance * scale_factor
 	camera_pivot.position.y = base_camera_height * scale_factor
+
+func update_ability_hitbox_scale() -> void:
+	var scale_factor := 1.0
+	if growth_stage >= 2:
+		scale_factor = ability_radius_stage2_multiplier
+	elif growth_stage >= 1:
+		scale_factor = ability_radius_stage1_multiplier
+
+	shake_area.scale = Vector3.ONE * scale_factor
+	roar_area.scale = Vector3.ONE * scale_factor
 		
 func change_hunger(amount: float) -> void:
 	if is_dead:
@@ -423,6 +522,9 @@ func change_hunger(amount: float) -> void:
 		die_from_starvation()
 		
 func take_damage(amount: float) -> void:
+	if is_shaking:
+		return
+
 	change_hunger(-amount)
 	
 func die_from_starvation() -> void:
@@ -430,4 +532,42 @@ func die_from_starvation() -> void:
 		return
 	
 	is_dead = true
+	movement_audio_player.stop()
+	action_audio_player.stop()
 	died.emit()
+
+func _should_play_movement_audio() -> bool:
+	if is_dead or is_attacking or is_shaking or is_roaring or not is_on_floor():
+		return false
+
+	return Vector2(velocity.x, velocity.z).length() > 0.1
+
+func update_movement_audio(should_play: bool) -> void:
+	if should_play:
+		if not movement_audio_player.playing:
+			play_random_movement_clip()
+	else:
+		if movement_audio_player.playing:
+			movement_audio_player.stop()
+
+func play_random_movement_clip() -> void:
+	var clips: Array = RUN_FOOTSTEP_SOUNDS
+	if growth_stage >= 2:
+		clips = WALK_FOOTSTEP_SOUNDS
+
+	if clips.is_empty():
+		return
+
+	movement_audio_player.stream = clips[randi_range(0, clips.size() - 1)]
+	movement_audio_player.play()
+
+func _on_movement_audio_finished() -> void:
+	if _should_play_movement_audio():
+		play_random_movement_clip()
+
+func play_action_sound(sound: AudioStream) -> void:
+	if sound == null:
+		return
+
+	action_audio_player.stream = sound
+	action_audio_player.play()

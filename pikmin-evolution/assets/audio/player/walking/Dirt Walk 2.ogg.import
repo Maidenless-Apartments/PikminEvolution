@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ctuqpyrc5hpru"
+path="res://.godot/imported/Dirt Walk 2.ogg-3dc2f31b6593ca081d9aca495996422a.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/audio/player/walking/Dirt Walk 2.ogg"
+dest_files=["res://.godot/imported/Dirt Walk 2.ogg-3dc2f31b6593ca081d9aca495996422a.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

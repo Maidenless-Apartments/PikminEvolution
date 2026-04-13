@@ -64,6 +64,14 @@ explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_growth")
 draw_pass_1 = SubResource("SphereMesh_growth")
 
+[node name="movementAudioPlayer" type="AudioStreamPlayer3D" parent="."]
+unit_size = 5.0
+max_distance = 40.0
+
+[node name="actionAudioPlayer" type="AudioStreamPlayer3D" parent="."]
+unit_size = 5.0
+max_distance = 45.0
+
 [node name="eatTimer" type="Timer" parent="."]
 
 [node name="hitboxTimer" type="Timer" parent="."]

@@ -18,6 +18,7 @@ extends CharacterBody3D
 @onready var anim_tree: AnimationTree = $AnimationTree
 
 const SKIN_NODE_NAMES: Array[String] = ["redPikminGLB", "yellowPikminGLB", "bluePikminGLB"]
+const ATTACK_SOUND = preload("res://assets/audio/pikmin/attack1.mp3")
 
 enum Nature {
 	NEUTRAL,
@@ -35,12 +36,14 @@ var flee_timer_left: float = 0.0
 var attack_cooldown_left: float = 0.0
 var attack_anim_timer_left: float = 0.0
 var player_target: Node3D
+var attack_audio_player: AudioStreamPlayer3D
 
 func _ready() -> void:
 	randomize()
 	apply_skin_by_index(randi_range(0, SKIN_NODE_NAMES.size() - 1))
 	current_move_speed = move_speed
 	player_target = _find_player()
+	_setup_attack_audio_player()
 	pick_new_direction()
 
 func apply_skin_by_index(skin_index: int) -> void:
@@ -74,6 +77,7 @@ func _physics_process(delta: float) -> void:
 	velocity.z = wander_direction.z * current_move_speed
 	
 	if is_frozen:
+		_stop_attack_sound()
 		velocity.x = 0
 		velocity.z = 0
 		move_and_slide()
@@ -83,10 +87,12 @@ func _physics_process(delta: float) -> void:
 	knockback_velocity = knockback_velocity.move_toward(Vector3.ZERO, 20.0 * delta)
 
 	if attack_anim_timer_left > 0.0:
+		_play_attack_sound()
 		anim_tree.set("parameters/conditions/is_attacking", true)
 		anim_tree.set("parameters/conditions/is_walking", false)
 		anim_tree.set("parameters/conditions/is_idle", false)
 	elif wander_direction.length() > 0.01:
+		_stop_attack_sound()
 		anim_tree.set("parameters/conditions/is_attacking", false)
 		visuals.look_at(
 			global_position + Vector3(wander_direction.x, 0.0, wander_direction.z),
@@ -95,6 +101,7 @@ func _physics_process(delta: float) -> void:
 		anim_tree.set("parameters/conditions/is_walking", true)
 		anim_tree.set("parameters/conditions/is_idle", false)
 	else:
+		_stop_attack_sound()
 		anim_tree.set("parameters/conditions/is_attacking", false)
 		anim_tree.set("parameters/conditions/is_walking", false)
 		anim_tree.set("parameters/conditions/is_idle", true)
@@ -222,3 +229,30 @@ func freeze_for(duration: float) -> void:
 	var timer = get_tree().create_timer(duration)
 	await timer.timeout
 	is_frozen = false
+
+func _setup_attack_audio_player() -> void:
+	if ATTACK_SOUND == null:
+		return
+
+	attack_audio_player = AudioStreamPlayer3D.new()
+	attack_audio_player.stream = ATTACK_SOUND
+	attack_audio_player.volume_db = 2.0
+	add_child(attack_audio_player)
+
+	var mp3_stream := attack_audio_player.stream as AudioStreamMP3
+	if mp3_stream != null:
+		mp3_stream.loop = true
+
+func _play_attack_sound() -> void:
+	if attack_audio_player == null:
+		return
+
+	if not attack_audio_player.playing:
+		attack_audio_player.play()
+
+func _stop_attack_sound() -> void:
+	if attack_audio_player == null:
+		return
+
+	if attack_audio_player.playing:
+		attack_audio_player.stop()

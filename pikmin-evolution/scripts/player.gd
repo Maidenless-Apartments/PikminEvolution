@@ -82,8 +82,8 @@ var growth_stage := 0
 var anim_tree: AnimationTree
 var anim_state: AnimationNodeStateMachinePlayback
 var eat_hitbox: Area3D
-var threshold1: int = 2
-var threshold2: int = 6
+var threshold1: int = 20
+var threshold2: int = 60
 var hunger: float = 100.0
 var base_camera_distance: float = 0.0
 var base_camera_height: float = 0.0

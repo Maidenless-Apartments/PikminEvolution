@@ -14,6 +14,7 @@ extends Control
 @onready var end_game_reason: Label = $EndGamePanel/MarginContainer/VBoxContainer/ReasonLabel
 @onready var end_game_score: Label = $EndGamePanel/MarginContainer/VBoxContainer/ScoreLabel
 @onready var play_again_button: Button = $EndGamePanel/MarginContainer/VBoxContainer/ButtonRow/PlayAgainButton
+@onready var next_level_button: Button = $EndGamePanel/MarginContainer/VBoxContainer/ButtonRow/NextLevelButton
 @onready var main_menu_button: Button = $EndGamePanel/MarginContainer/VBoxContainer/ButtonRow/MainMenuButton
 
 @onready var player = $"../../CharacterBody3D"
@@ -30,6 +31,7 @@ func _ready() -> void:
 	game_manager.time_changed.connect(_on_time_changed)
 	game_manager.game_over.connect(_on_game_over)
 	play_again_button.pressed.connect(_on_play_again_pressed)
+	next_level_button.pressed.connect(_on_next_level_pressed)
 	main_menu_button.pressed.connect(_on_main_menu_pressed)
 	
 	eat_icon.self_modulate = Color(1,1,1,1)
@@ -38,11 +40,13 @@ func _ready() -> void:
 	end_game_backdrop.visible = false
 	end_game_panel.visible = false
 
-	for button: Button in [play_again_button, main_menu_button]:
+	for button: Button in [play_again_button, next_level_button, main_menu_button]:
 		button.focus_mode = Control.FOCUS_ALL
 
-	play_again_button.focus_neighbor_right = main_menu_button.get_path()
-	main_menu_button.focus_neighbor_left = play_again_button.get_path()
+	play_again_button.focus_neighbor_right = next_level_button.get_path()
+	next_level_button.focus_neighbor_left = play_again_button.get_path()
+	next_level_button.focus_neighbor_right = main_menu_button.get_path()
+	main_menu_button.focus_neighbor_left = next_level_button.get_path()
 	
 	_on_hunger_changed(player.hunger, player.max_hunger)
 	_on_pikmin_eaten_changed(player.pikmin_eaten)
@@ -73,10 +77,14 @@ func _on_game_over(won: bool, reason: String) -> void:
 	end_game_title.text = "You Win!" if won else "You Lose"
 	end_game_reason.text = reason
 	end_game_score.text = "Pikmin Eaten: " + str(player.pikmin_eaten)
+	next_level_button.visible = won
 	end_game_backdrop.visible = true
 	end_game_panel.visible = true
 	get_tree().paused = true
-	play_again_button.grab_focus()
+	if won:
+		next_level_button.grab_focus()
+	else:
+		play_again_button.grab_focus()
 	
 func _on_eating_changed(value: int) -> void:
 	if value == 1:
@@ -98,11 +106,15 @@ func _on_roaring_changed(value: int) -> void:
 
 func _on_play_again_pressed() -> void:
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	LevelManager.restart_current_level()
+
+func _on_next_level_pressed() -> void:
+	get_tree().paused = false
+	LevelManager.load_next_level()
 
 func _on_main_menu_pressed() -> void:
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+	LevelManager.go_to_main_menu()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not end_game_panel.visible:

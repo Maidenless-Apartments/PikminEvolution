@@ -237,6 +237,10 @@ alignment = 1
 layout_mode = 2
 text = "Play Again"
 
+[node name="NextLevelButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Next Level"
+
 [node name="MainMenuButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
 layout_mode = 2
 text = "Back To Main Menu"

@@ -1,0 +1,393 @@
+[gd_scene load_steps=32 format=3 uid="uid://chw47exvd3uxs"]
+
+[ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
+[ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
+[ext_resource type="Script" uid="uid://x35yd04tdwyq" path="res://scripts/pikmin_spawner.gd" id="3_4wyf3"]
+[ext_resource type="Script" uid="uid://c5n5tejvton5d" path="res://scripts/game_manager.gd" id="4_k0juu"]
+[ext_resource type="Script" uid="uid://dixfjhgs1ecf2" path="res://scripts/hud.gd" id="5_71j4m"]
+[ext_resource type="Texture2D" uid="uid://c8vx51k87fi4b" path="res://assets/eat_icon2.png" id="6_jhx03"]
+[ext_resource type="Texture2D" uid="uid://b4xc7oby76gqc" path="res://assets/shake_icon2.png" id="7_o8fc1"]
+[ext_resource type="Texture2D" uid="uid://c0w17av8opq41" path="res://assets/roar_icon2.png" id="8_xo05s"]
+[ext_resource type="Texture2D" uid="uid://p85upac2cs58" path="res://assets/rt_icon.png" id="9_dss4m"]
+[ext_resource type="Texture2D" uid="uid://ct1xodo5ypmgf" path="res://assets/lt_icon.png" id="10_7t5mc"]
+[ext_resource type="Texture2D" uid="uid://bt8hr2oiseuxa" path="res://assets/a_icon.png" id="11_lakw3"]
+[ext_resource type="AudioStream" uid="uid://cb2pv87apgav1" path="res://assets/audio/084 Awakening Wood (Olimar, Battle) .mp3" id="12_lvlmusic"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jhx03"]
+
+[sub_resource type="Sky" id="Sky_o8fc1"]
+sky_material = SubResource("ProceduralSkyMaterial_jhx03")
+
+[sub_resource type="Environment" id="Environment_e5uuo"]
+background_mode = 2
+sky = SubResource("Sky_o8fc1")
+
+[sub_resource type="Gradient" id="Gradient_4hx2o"]
+interpolation_color_space = 1
+offsets = PackedFloat32Array(0, 0.8278689)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_km0xc"]
+frequency = 0.1367
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_n536o"]
+noise = SubResource("FastNoiseLite_km0xc")
+color_ramp = SubResource("Gradient_4hx2o")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m2jhg"]
+albedo_color = Color(1, 1, 0.5686275, 1)
+albedo_texture = SubResource("NoiseTexture2D_n536o")
+
+[sub_resource type="BoxMesh" id="BoxMesh_4hx2o"]
+material = SubResource("StandardMaterial3D_m2jhg")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_km0xc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_dss4m"]
+outline_color = Color(0.9411765, 0.13333334, 0.23921569, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_endgame_panel"]
+bg_color = Color(0.0705882, 0.0745098, 0.0901961, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.862745, 0.705882, 0.294118, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 10
+
+[sub_resource type="BoxMesh" id="BoxMesh_km0xc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_n536o"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_m2jhg"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4hx2o"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_m2jhg"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_km0xc"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_n536o"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_m2jhg"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5.196314, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_e5uuo")
+
+[node name="LevelMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_lvlmusic")
+volume_db = -10.0
+autoplay = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(0.695, 0, 0, 0, 0.695, 0, 0, 0, 0.695, 0, -0.1, -47.248657)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(218.749, 0, 0, 0, 1, 0, 0, 0, 225.36577, 0, 0, 0)
+mesh = SubResource("BoxMesh_4hx2o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(218.749, 0, 0, 0, 1, 0, 0, 0, 225.36577, 0, 0, 0)
+shape = SubResource("BoxShape3D_km0xc")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_nnsk1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -61.64083, 0.6099582, 17.00081)
+
+[node name="pikminSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.3101254)
+script = ExtResource("3_4wyf3")
+enemy_scene = ExtResource("2_rwgxs")
+
+[node name="spawnPoints" type="Node3D" parent="."]
+transform = Transform3D(3.1375039, 0, 2.6795847, 0, 1, 0, -4.69401, 0, 1.7910502, -51.532402, 0.4347613, -14.4724245)
+
+[node name="Marker3D" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1507411, 0.16931736, 0.6648998)
+
+[node name="Marker3D2" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3264501, 0.16670907, -3.601786)
+
+[node name="Marker3D3" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.154691, 0.17285717, -3.4166164)
+
+[node name="gameManager" type="Node" parent="."]
+script = ExtResource("4_k0juu")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_71j4m")
+
+[node name="TimeLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 1042.0
+offset_top = 24.0
+offset_right = 1089.0
+offset_bottom = 47.0
+text = "Time: "
+
+[node name="ScoreLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 27.0
+offset_right = 127.0
+offset_bottom = 50.0
+text = "Eaten: "
+
+[node name="StageLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 60.0
+offset_right = 98.0
+offset_bottom = 83.0
+text = "Stage:"
+
+[node name="MessageLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 401.0
+offset_top = 160.0
+offset_right = 668.0
+offset_bottom = 362.0
+label_settings = SubResource("LabelSettings_dss4m")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndGameBackdrop" type="ColorRect" parent="HUD/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.52)
+
+[node name="EndGamePanel" type="PanelContainer" parent="HUD/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -190.0
+offset_right = 280.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_endgame_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/Control/EndGamePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control/EndGamePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "You Win!"
+horizontal_alignment = 1
+
+[node name="ReasonLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reason"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Pikmin Eaten: 0"
+horizontal_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="PlayAgainButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Play Again"
+
+[node name="NextLevelButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Next Level"
+
+[node name="MainMenuButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Back To Main Menu"
+
+[node name="HungerBar" type="ProgressBar" parent="HUD/Control"]
+modulate = Color(0.7412862, 0.07741543, 0, 1)
+layout_mode = 0
+offset_left = 45.0
+offset_top = 577.0
+offset_right = 816.0
+offset_bottom = 604.0
+show_percentage = false
+
+[node name="iconsContainer" type="HBoxContainer" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 849.0
+offset_top = 531.0
+offset_right = 1137.0
+offset_bottom = 641.0
+
+[node name="eatIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("6_jhx03")
+expand_mode = 3
+
+[node name="shakeIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("7_o8fc1")
+expand_mode = 3
+
+[node name="roarIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("8_xo05s")
+expand_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 885.0
+offset_top = 492.0
+offset_right = 923.0
+offset_bottom = 525.0
+texture = ExtResource("9_dss4m")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 981.0
+offset_top = 494.0
+offset_right = 1016.0
+offset_bottom = 527.0
+texture = ExtResource("10_7t5mc")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 1069.0
+offset_top = 496.0
+offset_right = 1102.0
+offset_bottom = 524.0
+texture = ExtResource("11_lakw3")
+expand_mode = 1
+
+[node name="environment" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(29.41706, 0, 0, 0, 5.4293485, 0, 0, 0, 53.392406, -39.958683, 12.270594, -31.541958)
+mesh = SubResource("BoxMesh_km0xc")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(28.836073, 0, 0, 0, 23.453142, -1.5455236, 0, 8.616993, 4.2065005, -40.150745, 22.885904, -2.1537237)
+mesh = SubResource("BoxMesh_n536o")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(2.415, 0, 0, 0, 5.719, 0, 0, 0, 2.415, -52.822086, 5.4714203, -8.981051)
+mesh = SubResource("CylinderMesh_m2jhg")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(2.415, 0, 0, 0, 5.719, 0, 0, 0, 2.415, -27.918522, 5.4714203, -8.981051)
+mesh = SubResource("CylinderMesh_m2jhg")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(2.415, 0, 0, 0, 5.719, 0, 0, 0, 2.415, -26.876911, 5.4714203, -54.555546)
+mesh = SubResource("CylinderMesh_m2jhg")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(2.415, 0, 0, 0, 5.719, 0, 0, 0, 2.415, -52.822086, 5.4714203, -54.49709)
+mesh = SubResource("CylinderMesh_m2jhg")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(3.8345556, 0, 0, 0, 28.613163, 0, 0, 0, 4.307094, -64.03937, 27.634853, -69.87099)
+mesh = SubResource("CylinderMesh_m2jhg")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(82.28262, 0, 0, 0, 1, 0, 0, 0, 86.4781, -63.714184, 56.72422, -69.92577)
+mesh = SubResource("CylinderMesh_4hx2o")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(2.640404, 0, 0, 0, 5.282932, 0, 0, 0, 31.949432, -15.632551, 2.472436, -26.473032)
+mesh = SubResource("BoxMesh_m2jhg")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(-5.0076817e-08, 0, 34.687195, 0, 5.282932, 0, -1.1456239, 0, -1.5162254e-06, 2.7800589, 2.472436, -11.172957)
+mesh = SubResource("BoxMesh_m2jhg")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(2.640404, 0, 0, 0, 5.282932, 0, 0, 0, 31.949432, 21.128796, 2.472436, -26.473032)
+mesh = SubResource("BoxMesh_m2jhg")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(-5.3492137e-08, 0, 11.239652, 0, 5.282932, 0, -1.2237575, 0, -4.913008e-07, 14.31176, 2.472436, -41.729553)
+mesh = SubResource("BoxMesh_m2jhg")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(-5.3492137e-08, 0, 11.239652, 0, 5.282932, 0, -1.2237575, 0, -4.913008e-07, -8.996916, 2.472436, -41.729553)
+mesh = SubResource("BoxMesh_m2jhg")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(16.472435, 0, 0, 0, 6.43, 0, 0, 0, 16.299158, 2.9511538, 1.9432917, -25.739788)
+mesh = SubResource("CylinderMesh_km0xc")
+
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(8.498045, 0, 0, 0, 4.5371666, 0, 0, 0, 9.350849, 2.9511538, 11.130137, -25.739788)
+mesh = SubResource("CylinderMesh_km0xc")
+
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(0.0038585681, -0.026472738, 2.0786095, -1.105634, 7.583844, 0.007255745, -19.175299, -0.43728435, -9.0858904e-08, 3.4605923, 4.5395513, -33.591198)
+mesh = SubResource("PrismMesh_n536o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment"]
+transform = Transform3D(16.4, 0, 0, 0, 16.4, 0, 0, 0, 16.4, 2.7779865, -7.9417477, -25.726688)
+shape = SubResource("CylinderShape3D_m2jhg")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="environment"]
+transform = Transform3D(8.91, 0, 0, 0, 8.91, 0, 0, 0, 8.91, 3.017377, 6.777294, -25.94883)
+shape = SubResource("CylinderShape3D_m2jhg")
+
+[node name="spawnPoints2" type="Node3D" parent="."]
+
+[node name="Marker3D4" type="Marker3D" parent="spawnPoints2"]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, -8.651916, 0.59717476, -35.39557)
+
+[node name="Marker3D5" type="Marker3D" parent="spawnPoints2"]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 2.2056484, 0.61152744, -49.65091)
+
+[node name="Marker3D6" type="Marker3D" parent="spawnPoints2"]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 16.251228, 0.5992476, -36.163643)
+
+[node name="spawnPoints3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -47.42006)
+
+[node name="Marker3D" type="Marker3D" parent="spawnPoints3"]
+transform = Transform3D(2.785, 0, 0, 0, 2.785, 0, 0, 0, 2.785, 3.6508546, 15.729993, 22.145899)

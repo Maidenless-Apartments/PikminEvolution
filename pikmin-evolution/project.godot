@@ -15,6 +15,10 @@ run/main_scene="uid://bhtayk756iokw"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+LevelManager="*res://scripts/level_manager.gd"
+
 [global_group]
 
 eatables=""

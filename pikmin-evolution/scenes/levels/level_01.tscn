@@ -1,0 +1,583 @@
+[gd_scene load_steps=32 format=3 uid="uid://chw47exvd3uxs"]
+
+[ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_nnsk1"]
+[ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_rwgxs"]
+[ext_resource type="Script" uid="uid://x35yd04tdwyq" path="res://scripts/pikmin_spawner.gd" id="3_4wyf3"]
+[ext_resource type="Script" uid="uid://c5n5tejvton5d" path="res://scripts/game_manager.gd" id="4_k0juu"]
+[ext_resource type="Script" uid="uid://dixfjhgs1ecf2" path="res://scripts/hud.gd" id="5_71j4m"]
+[ext_resource type="Texture2D" uid="uid://c8vx51k87fi4b" path="res://assets/eat_icon2.png" id="6_jhx03"]
+[ext_resource type="PackedScene" uid="uid://ce3vx5j7swn8l" path="res://assets/models/TreeGLB.glb" id="6_qfnet"]
+[ext_resource type="PackedScene" uid="uid://jk050iuqf144" path="res://assets/models/rockGLB.glb" id="7_i7141"]
+[ext_resource type="Texture2D" uid="uid://b4xc7oby76gqc" path="res://assets/shake_icon2.png" id="7_o8fc1"]
+[ext_resource type="PackedScene" uid="uid://yraymn5kojjf" path="res://assets/models/rockGLB2.glb" id="8_4mrxx"]
+[ext_resource type="Texture2D" uid="uid://c0w17av8opq41" path="res://assets/roar_icon2.png" id="8_xo05s"]
+[ext_resource type="PackedScene" uid="uid://buiy5vivgkuo" path="res://assets/models/benchGLB.glb" id="9_7r4gi"]
+[ext_resource type="Texture2D" uid="uid://p85upac2cs58" path="res://assets/rt_icon.png" id="9_dss4m"]
+[ext_resource type="Texture2D" uid="uid://ct1xodo5ypmgf" path="res://assets/lt_icon.png" id="10_7t5mc"]
+[ext_resource type="PackedScene" uid="uid://b63pqoet4b5v" path="res://assets/models/grassTuftGLB.glb" id="10_w7kh3"]
+[ext_resource type="Texture2D" uid="uid://bt8hr2oiseuxa" path="res://assets/a_icon.png" id="11_lakw3"]
+[ext_resource type="AudioStream" uid="uid://cb2pv87apgav1" path="res://assets/audio/084 Awakening Wood (Olimar, Battle) .mp3" id="12_lvlmusic"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jhx03"]
+
+[sub_resource type="Sky" id="Sky_o8fc1"]
+sky_material = SubResource("ProceduralSkyMaterial_jhx03")
+
+[sub_resource type="Environment" id="Environment_e5uuo"]
+background_mode = 2
+sky = SubResource("Sky_o8fc1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71j4m"]
+albedo_color = Color(0.11263616, 0.5351684, 0.29986113, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_71j4m"]
+material = SubResource("StandardMaterial3D_71j4m")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qfnet"]
+height = 2.0
+radius = 0.5
+
+[sub_resource type="LabelSettings" id="LabelSettings_dss4m"]
+outline_color = Color(0.9411765, 0.13333334, 0.23921569, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_endgame_panel"]
+bg_color = Color(0.0705882, 0.0745098, 0.0901961, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.862745, 0.705882, 0.294118, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 10
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qfnet"]
+transparency = 1
+albedo_color = Color(0.07058824, 0.5882353, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qfnet"]
+material = SubResource("StandardMaterial3D_qfnet")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qfnet"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4mrxx"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4mrxx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w7kh3"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5.196314, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_e5uuo")
+
+[node name="LevelMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_lvlmusic")
+volume_db = -10.0
+autoplay = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(0.695, 0, 0, 0, 0.695, 0, 0, 0, 0.695, 0, -0.1, -47.248657)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(218.749, 0, 0, 0, 1, 0, 0, 0, 225.36577, 0, 0, 0)
+mesh = SubResource("CylinderMesh_71j4m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(218.749, 0, 0, 0, 1, 0, 0, 0, 225.36577, 0, 0, 0)
+shape = SubResource("CylinderShape3D_qfnet")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(218.74898, 0, 0, 0, 0.99999994, 0, 0, 0, 225.36577, 0, 0, -129.36963)
+mesh = SubResource("CylinderMesh_71j4m")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(218.74898, 0, 0, 0, 0.99999994, 0, 0, 0, 225.36577, 0, 0, -129.36963)
+shape = SubResource("CylinderShape3D_qfnet")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_nnsk1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7654309, 0.6099582, 0.6574005)
+
+[node name="pikminSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.3101254)
+script = ExtResource("3_4wyf3")
+enemy_scene = ExtResource("2_rwgxs")
+
+[node name="spawnPoints" type="Node3D" parent="."]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 0.088373184, 0.4347632, -6.8344717)
+
+[node name="Marker3D" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7593307, 0.16931736, -2.760733)
+
+[node name="Marker3D2" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3264501, 0.16670907, -3.601786)
+
+[node name="Marker3D3" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.0798607, 0.17285717, -1.939575)
+
+[node name="gameManager" type="Node" parent="."]
+script = ExtResource("4_k0juu")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_71j4m")
+
+[node name="TimeLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 1042.0
+offset_top = 24.0
+offset_right = 1089.0
+offset_bottom = 47.0
+text = "Time: "
+
+[node name="ScoreLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 27.0
+offset_right = 127.0
+offset_bottom = 50.0
+text = "Eaten: "
+
+[node name="StageLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 60.0
+offset_right = 98.0
+offset_bottom = 83.0
+text = "Stage:"
+
+[node name="MessageLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 401.0
+offset_top = 160.0
+offset_right = 668.0
+offset_bottom = 362.0
+label_settings = SubResource("LabelSettings_dss4m")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndGameBackdrop" type="ColorRect" parent="HUD/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.52)
+
+[node name="EndGamePanel" type="PanelContainer" parent="HUD/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -190.0
+offset_right = 280.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_endgame_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/Control/EndGamePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control/EndGamePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "You Win!"
+horizontal_alignment = 1
+
+[node name="ReasonLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reason"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Pikmin Eaten: 0"
+horizontal_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="PlayAgainButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Play Again"
+
+[node name="NextLevelButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Next Level"
+
+[node name="MainMenuButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Back To Main Menu"
+
+[node name="HungerBar" type="ProgressBar" parent="HUD/Control"]
+modulate = Color(0.7412862, 0.07741543, 0, 1)
+layout_mode = 0
+offset_left = 45.0
+offset_top = 577.0
+offset_right = 816.0
+offset_bottom = 604.0
+show_percentage = false
+
+[node name="iconsContainer" type="HBoxContainer" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 849.0
+offset_top = 531.0
+offset_right = 1137.0
+offset_bottom = 641.0
+
+[node name="eatIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("6_jhx03")
+expand_mode = 3
+
+[node name="shakeIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("7_o8fc1")
+expand_mode = 3
+
+[node name="roarIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("8_xo05s")
+expand_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 885.0
+offset_top = 492.0
+offset_right = 923.0
+offset_bottom = 525.0
+texture = ExtResource("9_dss4m")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 981.0
+offset_top = 494.0
+offset_right = 1016.0
+offset_bottom = 527.0
+texture = ExtResource("10_7t5mc")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 1069.0
+offset_top = 496.0
+offset_right = 1102.0
+offset_bottom = 524.0
+texture = ExtResource("11_lakw3")
+expand_mode = 1
+
+[node name="environment" type="Node3D" parent="."]
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="environment"]
+transform = Transform3D(32.21742, 0, -23.142199, 0, 1, 0, 12.456222, 0, 59.85618, -11.617948, -0.056634903, -127.87254)
+mesh = SubResource("CylinderMesh_qfnet")
+
+[node name="Tree" type="StaticBody3D" parent="environment"]
+
+[node name="TreeGLB" parent="environment/Tree" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree2" type="StaticBody3D" parent="environment"]
+transform = Transform3D(0.7100418, 0, 0.5928454, 0, 0.925, 0, -0.5928454, 0, 0.7100418, 31.244919, -3.8146973e-06, -14.566055)
+
+[node name="TreeGLB" parent="environment/Tree2" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree2"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree3" type="StaticBody3D" parent="environment"]
+transform = Transform3D(-0.37834242, 0, 0.81109923, 0, 0.895, 0, -0.81109923, 0, -0.37834242, -64.41723, -3.8146973e-06, 9.758648)
+
+[node name="TreeGLB" parent="environment/Tree3" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree3"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree4" type="StaticBody3D" parent="environment"]
+transform = Transform3D(0.87517756, 0, -0.4838018, 0, 1, 0, 0.4838018, 0, 0.87517756, 79.60637, 0, -48.661335)
+
+[node name="TreeGLB" parent="environment/Tree4" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree4"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree5" type="StaticBody3D" parent="environment"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 63.104744, 0, -93.848335)
+
+[node name="TreeGLB" parent="environment/Tree5" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree5"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree6" type="StaticBody3D" parent="environment"]
+transform = Transform3D(-0.41983235, 0, 0.9076017, 0, 1, 0, -0.9076017, 0, -0.41983235, -87.53058, 0, -21.417858)
+
+[node name="TreeGLB" parent="environment/Tree6" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree6"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree7" type="StaticBody3D" parent="environment"]
+transform = Transform3D(0.795, 0, 0, 0, 0.795, 0, 0, 0, 0.795, -61.088512, 0, -87.3364)
+
+[node name="TreeGLB" parent="environment/Tree7" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree7"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree8" type="StaticBody3D" parent="environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -43.3722, 0, -119.593994)
+
+[node name="TreeGLB" parent="environment/Tree8" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree8"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree9" type="StaticBody3D" parent="environment"]
+transform = Transform3D(-0.81931585, 0, 0.84222704, 0, 1.175, 0, -0.84222704, 0, -0.81931585, -88.53503, -1.5258789e-05, -119.170074)
+
+[node name="TreeGLB" parent="environment/Tree9" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree9"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree10" type="StaticBody3D" parent="environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.87429, 0, -224.07462)
+
+[node name="TreeGLB" parent="environment/Tree10" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree10"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree11" type="StaticBody3D" parent="environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.66881, 0, -138.49432)
+
+[node name="TreeGLB" parent="environment/Tree11" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree11"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree12" type="StaticBody3D" parent="environment"]
+transform = Transform3D(0.49507672, 0, 0.7214735, 0, 0.875, 0, -0.7214735, 0, 0.49507672, 36.085503, -7.6293945e-06, -184.99268)
+
+[node name="TreeGLB" parent="environment/Tree12" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree12"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="Tree13" type="StaticBody3D" parent="environment"]
+transform = Transform3D(-0.8881589, 0, 0.27581468, 0, 0.93, 0, -0.27581468, 0, -0.8881589, -52.47982, 1.5258789e-05, -163.69197)
+
+[node name="TreeGLB" parent="environment/Tree13" instance=ExtResource("6_qfnet")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -4.092827, -1.7813826, 24.149216)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/Tree13"]
+transform = Transform3D(13.2, 0, 0, 0, 13.2, 0, 0, 0, 13.2, -4.0884624, 6.4338455, 23.832626)
+shape = SubResource("BoxShape3D_qfnet")
+
+[node name="smallRock" type="StaticBody3D" parent="environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.75229, 0, -110.535614)
+
+[node name="rockGLB" parent="environment/smallRock" instance=ExtResource("7_i7141")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0.40639496, -2.0695248)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/smallRock"]
+transform = Transform3D(1.54, 0, 0, 0, 1.54, 0, 0, 0, 1.54, -0.05479437, 1.0113181, -2.1286955)
+shape = SubResource("BoxShape3D_4mrxx")
+
+[node name="largeRock" type="StaticBody3D" parent="environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.012524, 0, -120.54627)
+
+[node name="rockGLB2" parent="environment/largeRock" instance=ExtResource("8_4mrxx")]
+transform = Transform3D(150, 0, 0, 0, 150, 0, 0, 0, 150, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/largeRock"]
+transform = Transform3D(-2.4465265e-07, -3.665, 0, 5.597, -1.6020223e-07, 0, 0, 0, 4.818, -8.101604, 1.5605292, -0.7165494)
+shape = SubResource("CapsuleShape3D_4mrxx")
+
+[node name="smallRock2" type="StaticBody3D" parent="environment"]
+transform = Transform3D(0.83860254, 0, -0.9336867, 0, 1.255, 0, 0.9336867, 0, 0.83860254, 20.988947, 0, -131.6623)
+
+[node name="rockGLB" parent="environment/smallRock2" instance=ExtResource("7_i7141")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0.40639496, -2.0695248)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/smallRock2"]
+transform = Transform3D(1.54, 0, 0, 0, 1.54, 0, 0, 0, 1.54, -0.05479437, 1.0113181, -2.1286955)
+shape = SubResource("BoxShape3D_4mrxx")
+
+[node name="smallRock3" type="StaticBody3D" parent="environment"]
+transform = Transform3D(-1.3003848, 0, 0.9992994, 0, 1.64, 0, -0.9992994, 0, -1.3003848, 41.968117, -0.09781194, -114.94292)
+
+[node name="rockGLB" parent="environment/smallRock3" instance=ExtResource("7_i7141")]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0.40639496, -2.0695248)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/smallRock3"]
+transform = Transform3D(1.54, 0, 0, 0, 1.54, 0, 0, 0, 1.54, -0.05479437, 1.0113181, -2.1286955)
+shape = SubResource("BoxShape3D_4mrxx")
+
+[node name="largeRock2" type="StaticBody3D" parent="environment"]
+transform = Transform3D(0.5496168, 0, 1.2984688, 0, 1.41, 0, -1.2984688, 0, 0.5496168, 51.872856, 3.8146973e-06, -140.23897)
+
+[node name="rockGLB2" parent="environment/largeRock2" instance=ExtResource("8_4mrxx")]
+transform = Transform3D(150, 0, 0, 0, 150, 0, 0, 0, 150, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/largeRock2"]
+transform = Transform3D(-2.4924233e-07, -3.733, 0, 5.702, -1.6317462e-07, 0, 0, 0, 4.908, -8.101604, 1.5605292, -0.7165494)
+shape = SubResource("CapsuleShape3D_4mrxx")
+
+[node name="largeRock3" type="StaticBody3D" parent="environment"]
+transform = Transform3D(0.825, 0, 0, 0, 0.825, 0, 0, 0, 0.825, 39.79062, 0, -142.48953)
+
+[node name="rockGLB2" parent="environment/largeRock3" instance=ExtResource("8_4mrxx")]
+transform = Transform3D(150, 0, 0, 0, 150, 0, 0, 0, 150, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/largeRock3"]
+transform = Transform3D(-2.3328768e-07, -3.494, 0, 5.337, -1.527276e-07, 0, 0, 0, 4.594, -8.101604, 1.5605292, -0.7165494)
+shape = SubResource("CapsuleShape3D_4mrxx")
+
+[node name="largeRock4" type="StaticBody3D" parent="environment"]
+transform = Transform3D(0.66070867, 0, -0.51871383, 0, 0.84, 0, 0.51871383, 0, 0.66070867, 43.84271, 0, -98.35688)
+
+[node name="rockGLB2" parent="environment/largeRock4" instance=ExtResource("8_4mrxx")]
+transform = Transform3D(150, 0, 0, 0, 150, 0, 0, 0, 150, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/largeRock4"]
+transform = Transform3D(-2.4268562e-07, -3.635, 0, 5.552, -1.588909e-07, 0, 0, 0, 4.779, -8.101604, 1.5605292, -0.7165494)
+shape = SubResource("CapsuleShape3D_4mrxx")
+
+[node name="bench" type="StaticBody3D" parent="environment"]
+transform = Transform3D(28.463995, 0, 0, 0, 21.663687, 0, 0, 0, 20.19, -3.829197, 0.39468145, -60.86367)
+
+[node name="benchGLB" parent="environment/bench" instance=ExtResource("9_7r4gi")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="environment/bench"]
+transform = Transform3D(0.17698565, 0, 0, 0, 0.45299703, 0, 0, 0, 0.1482869, -0.5411459, 0.23726901, 0.35170746)
+shape = SubResource("BoxShape3D_w7kh3")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="environment/bench"]
+transform = Transform3D(0.17698565, 0, 0, 0, 0.45299685, 0, 0, 0, 0.17139842, -0.5411459, 0.23726895, -0.41727757)
+shape = SubResource("BoxShape3D_w7kh3")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="environment/bench"]
+transform = Transform3D(0.17698565, 0, 0, 0, 0.4529968, 0, 0, 0, 0.1482869, 0.78622085, 0.23726895, 0.313668)
+shape = SubResource("BoxShape3D_w7kh3")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="environment/bench"]
+transform = Transform3D(0.17698565, 0, 0, 0, 0.45299667, 0, 0, 0, 0.1713984, 0.78585684, 0.23726895, -0.4238236)
+shape = SubResource("BoxShape3D_w7kh3")
+
+[node name="grassTuftGLB" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(200, 0, 0, 0, 271.13242, 0, 0, 0, 200, 1.8995802, 0.5890856, -18.49172)
+
+[node name="grassTuftGLB2" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(77.8055, 0, -184.24522, 0, 271.1324, 0, 184.24522, 0, 77.8055, -15.4511, 0.5890856, -15.8072)
+
+[node name="grassTuftGLB3" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(181.82542, 0, 83.303764, 0, 271.1324, 0, -83.303764, 0, 181.82542, 28.91754, 0.5890856, -13.225599)
+
+[node name="grassTuftGLB4" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(187.375, 0, 0, 0, 187.803, 0, 0, 0, 187.375, -6.0747404, 0.53750014, -6.3692884)
+
+[node name="grassTuftGLB5" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-1.1969197, 0, 187.37119, 0, 187.803, 0, -187.37119, 0, -1.1969197, 10.124856, 0.53750014, -6.3692884)
+
+[node name="grassTuftGLB6" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-199.9979, 0, -0.9180339, 0, 271.1324, 0, 0.9180339, 0, -199.9979, 0.14530063, 0.5890856, -47.49886)
+
+[node name="grassTuftGLB7" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-199.9979, 0, -0.9180339, 0, 271.1324, 0, 0.9180339, 0, -199.9979, -21.001328, 0.5890856, -72.4617)
+
+[node name="grassTuftGLB8" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-199.9979, 0, -0.9180339, 0, 271.1324, 0, 0.9180339, 0, -199.9979, 21.129536, 0.5890856, -72.4617)
+
+[node name="grassTuftGLB9" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(-199.9979, 0, -0.9180339, 0, 271.1324, 0, 0.9180339, 0, -199.9979, 36.387283, 0.5890856, -127.16901)
+
+[node name="grassTuftGLB10" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(187.375, 0, 0, 0, 187.803, 0, 0, 0, 187.375, -11.549, 0.53749824, -87.61104)
+
+[node name="grassTuftGLB11" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(148.36743, 0, -114.43992, 0, 187.803, 0, 114.43992, 0, 148.36743, 5.951996, 0.53749824, -80.90704)
+
+[node name="grassTuftGLB12" parent="environment" instance=ExtResource("10_w7kh3")]
+transform = Transform3D(58.346657, 0, -178.05914, 0, 187.803, 0, 178.05914, 0, 58.346657, 23.12187, 0.53749824, -97.22427)
+
+[node name="spawnPoints2" type="Node3D" parent="."]
+
+[node name="Marker3D4" type="Marker3D" parent="spawnPoints2"]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, -20.976967, 0.59717476, -72.44847)
+
+[node name="Marker3D5" type="Marker3D" parent="spawnPoints2"]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 21.188858, 0.6115198, -72.44847)
+
+[node name="Marker3D6" type="Marker3D" parent="spawnPoints2"]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 36.16198, 0.5992476, -127.212425)
+
+[node name="spawnPoints3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -47.42006)
+
+[node name="Marker3D" type="Marker3D" parent="spawnPoints3"]
+transform = Transform3D(2.785, 0, 0, 0, 2.785, 0, 0, 0, 2.785, 0, 0.601174, 0)

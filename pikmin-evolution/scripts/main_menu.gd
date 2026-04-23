@@ -23,14 +23,15 @@ func _ready() -> void:
 	settings_button.focus_neighbor_right = quit_button.get_path()
 	quit_button.focus_neighbor_left = settings_button.get_path()
 
+	_update_level_button_text()
 	play_button.grab_focus()
 
 func _on_play_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/world.tscn")
+	LevelManager.load_selected_level()
 
 func _on_level_pressed() -> void:
-	# Intentionally no-op for now.
-	pass
+	LevelManager.cycle_selected_level()
+	_update_level_button_text()
 
 func _on_settings_pressed() -> void:
 	# Intentionally no-op for now.
@@ -38,6 +39,11 @@ func _on_settings_pressed() -> void:
 
 func _on_quit_pressed() -> void:
 	get_tree().quit()
+
+func _update_level_button_text() -> void:
+	var level_index := LevelManager.get_selected_level_index() + 1
+	var level_count := LevelManager.get_level_count()
+	level_button.text = "Level: %d / %d" % [level_index, level_count]
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("roar"):

@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://p85upac2cs58" path="res://assets/rt_icon.png" id="9_dss4m"]
 [ext_resource type="Texture2D" uid="uid://ct1xodo5ypmgf" path="res://assets/lt_icon.png" id="10_7t5mc"]
 [ext_resource type="Texture2D" uid="uid://bt8hr2oiseuxa" path="res://assets/a_icon.png" id="11_lakw3"]
-[ext_resource type="AudioStream" uid="uid://cb2pv87apgav1" path="res://assets/audio/084 Awakening Wood (Olimar, Battle) .mp3" id="12_lvlmusic"]
+[ext_resource type="AudioStream" uid="uid://k8a7pub5ksom" path="res://assets/audio/120. Tropical Wilds (Working)_.mp3" id="12_lvlmusic"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jhx03"]
 

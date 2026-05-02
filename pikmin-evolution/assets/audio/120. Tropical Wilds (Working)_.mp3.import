@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://k8a7pub5ksom"
+path="res://.godot/imported/120. Tropical Wilds (Working)_.mp3-f2fe0c3b0f4106c4457d9fabc0080e63.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/120. Tropical Wilds (Working)_.mp3"
+dest_files=["res://.godot/imported/120. Tropical Wilds (Working)_.mp3-f2fe0c3b0f4106c4457d9fabc0080e63.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

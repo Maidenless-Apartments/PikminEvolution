@@ -3,7 +3,8 @@ extends Node
 const MAIN_MENU_SCENE := "res://scenes/MainMenu.tscn"
 const LEVEL_SCENES: Array[String] = [
 	"res://scenes/levels/level_01.tscn",
-	"res://scenes/levels/level_02.tscn"
+	"res://scenes/levels/level_02.tscn",
+	"res://scenes/levels/level_03.tscn"
 ]
 
 var selected_level_index: int = 0

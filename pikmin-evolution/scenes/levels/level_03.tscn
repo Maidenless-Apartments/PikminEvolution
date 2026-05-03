@@ -1,0 +1,306 @@
+[gd_scene load_steps=21 format=3 uid="uid://c1rj5krqxx750"]
+
+[ext_resource type="PackedScene" uid="uid://b06278fk4rc7j" path="res://scenes/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://brb67muit07e4" path="res://scenes/Pikmin.tscn" id="2_pikmin"]
+[ext_resource type="Script" uid="uid://x35yd04tdwyq" path="res://scripts/pikmin_spawner.gd" id="3_spawner_script"]
+[ext_resource type="Script" uid="uid://c5n5tejvton5d" path="res://scripts/game_manager.gd" id="4_game_manager"]
+[ext_resource type="Script" uid="uid://dixfjhgs1ecf2" path="res://scripts/hud.gd" id="5_hud_script"]
+[ext_resource type="AudioStream" uid="uid://ck0ml51e6okcn" path="res://assets/audio/261 Bulblax Kingdom (Olimar, Carrying) .mp3" id="6_bulblax_music"]
+[ext_resource type="Texture2D" uid="uid://c8vx51k87fi4b" path="res://assets/eat_icon2.png" id="7_dkd5g"]
+[ext_resource type="Texture2D" uid="uid://b4xc7oby76gqc" path="res://assets/shake_icon2.png" id="8_iaq7h"]
+[ext_resource type="Texture2D" uid="uid://c0w17av8opq41" path="res://assets/roar_icon2.png" id="9_iaubp"]
+[ext_resource type="Texture2D" uid="uid://p85upac2cs58" path="res://assets/rt_icon.png" id="10_xunku"]
+[ext_resource type="Texture2D" uid="uid://ct1xodo5ypmgf" path="res://assets/lt_icon.png" id="11_j33in"]
+[ext_resource type="Texture2D" uid="uid://bt8hr2oiseuxa" path="res://assets/a_icon.png" id="12_7oqvy"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jhx03"]
+sky_top_color = Color(0.18653047, 0.23052156, 0.28912577, 1)
+sky_horizon_color = Color(0.13707149, 0.14066091, 0.14784753, 1)
+ground_horizon_color = Color(0.12277918, 0.12610877, 0.13277549, 1)
+
+[sub_resource type="Sky" id="Sky_o8fc1"]
+sky_material = SubResource("ProceduralSkyMaterial_jhx03")
+
+[sub_resource type="Environment" id="Environment_e5uuo"]
+background_mode = 2
+sky = SubResource("Sky_o8fc1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_71j4m"]
+albedo_color = Color(0.48335326, 0.4584474, 0.21340084, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_r8ojw"]
+material = SubResource("StandardMaterial3D_71j4m")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1jnh5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ghs8o"]
+outline_color = Color(0.9411765, 0.13333334, 0.23921569, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1uqhn"]
+bg_color = Color(0.0705882, 0.0745098, 0.0901961, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.862745, 0.705882, 0.294118, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 10
+
+[node name="Node3D" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_e5uuo")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5.196314, 0)
+light_energy = 0.58
+
+[node name="LevelMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_bulblax_music")
+volume_db = -8.0
+autoplay = true
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="pikminSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+script = ExtResource("3_spawner_script")
+enemy_scene = ExtResource("2_pikmin")
+
+[node name="gameManager" type="Node" parent="."]
+script = ExtResource("4_game_manager")
+
+[node name="environment" type="Node3D" parent="."]
+
+[node name="spawnPoints" type="Node3D" parent="."]
+transform = Transform3D(3.1375039, 0, 2.6795847, 0, 1, 0, -4.69401, 0, 1.7910502, -1.4296741, 0.4347613, -6.2791643)
+
+[node name="Marker3D" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1125149, 0.16931736, -1.44306)
+
+[node name="Marker3D2" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.50134265, 0.16670907, -3.3491373)
+
+[node name="Marker3D3" type="Marker3D" parent="spawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6069441, 0.17285717, 1.8415556)
+
+[node name="spawnPoints2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3390265, 0, 4.067028)
+
+[node name="Marker3D4" type="Marker3D" parent="spawnPoints2"]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, -1.2481499, 0.59717476, -31.118652)
+
+[node name="Marker3D5" type="Marker3D" parent="spawnPoints2"]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, 12.160795, 0.6115198, -31.090202)
+
+[node name="Marker3D6" type="Marker3D" parent="spawnPoints2"]
+transform = Transform3D(5.6460304, 0, 0, 0, 1, 0, 0, 0, 3.2230475, -15.280869, 0.5992476, -30.40393)
+
+[node name="spawnPoints3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -47.42006)
+
+[node name="Marker3D" type="Marker3D" parent="spawnPoints3"]
+transform = Transform3D(2.785, 0, 0, 0, 2.785, 0, 0, 0, 2.785, 0.8546295, 0.6011778, -8.885002)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(0.25840497, 0, 0, 0, 0.69500023, 0, 0, 0, 0.275061, 0, -0.1, -13.0865555)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(164.18109, 0, 0, 0, 0.9999997, 0, 0, 0, 107.61406, 0, 0, 0)
+mesh = SubResource("CylinderMesh_r8ojw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(164.18109, 0, 0, 0, 0.9999997, 0, 0, 0, 107.61406, 0, 0, 0)
+shape = SubResource("CylinderShape3D_1jnh5")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(218.74898, 0, 0, 0, 0.99999994, 0, 0, 0, 225.36577, 0, 0, -129.36963)
+mesh = SubResource("CylinderMesh_r8ojw")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(218.74898, 0, 0, 0, 0.99999994, 0, 0, 0, 225.36577, 0, 0, -129.36963)
+shape = SubResource("CylinderShape3D_1jnh5")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_hud_script")
+
+[node name="TimeLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 1042.0
+offset_top = 24.0
+offset_right = 1089.0
+offset_bottom = 47.0
+text = "Time: "
+
+[node name="ScoreLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 27.0
+offset_right = 127.0
+offset_bottom = 50.0
+text = "Eaten: "
+
+[node name="StageLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 60.0
+offset_right = 98.0
+offset_bottom = 83.0
+text = "Stage:"
+
+[node name="MessageLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 401.0
+offset_top = 160.0
+offset_right = 668.0
+offset_bottom = 362.0
+label_settings = SubResource("LabelSettings_ghs8o")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndGameBackdrop" type="ColorRect" parent="HUD/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.52)
+
+[node name="EndGamePanel" type="PanelContainer" parent="HUD/Control"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -190.0
+offset_right = 280.0
+offset_bottom = 190.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1uqhn")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/Control/EndGamePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control/EndGamePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "You Win!"
+horizontal_alignment = 1
+
+[node name="ReasonLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reason"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ScoreLabel" type="Label" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Pikmin Eaten: 0"
+horizontal_alignment = 1
+
+[node name="ButtonRow" type="HBoxContainer" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="PlayAgainButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Play Again"
+
+[node name="NextLevelButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Next Level"
+
+[node name="MainMenuButton" type="Button" parent="HUD/Control/EndGamePanel/MarginContainer/VBoxContainer/ButtonRow"]
+layout_mode = 2
+text = "Back To Main Menu"
+
+[node name="HungerBar" type="ProgressBar" parent="HUD/Control"]
+modulate = Color(0.7412862, 0.07741543, 0, 1)
+layout_mode = 0
+offset_left = 45.0
+offset_top = 577.0
+offset_right = 816.0
+offset_bottom = 604.0
+show_percentage = false
+
+[node name="iconsContainer" type="HBoxContainer" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 849.0
+offset_top = 531.0
+offset_right = 1137.0
+offset_bottom = 641.0
+
+[node name="eatIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("7_dkd5g")
+expand_mode = 3
+
+[node name="shakeIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("8_iaq7h")
+expand_mode = 3
+
+[node name="roarIcon" type="TextureRect" parent="HUD/Control/iconsContainer"]
+layout_mode = 2
+texture = ExtResource("9_iaubp")
+expand_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 885.0
+offset_top = 492.0
+offset_right = 923.0
+offset_bottom = 525.0
+texture = ExtResource("10_xunku")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 981.0
+offset_top = 494.0
+offset_right = 1016.0
+offset_bottom = 527.0
+texture = ExtResource("11_j33in")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 1069.0
+offset_top = 496.0
+offset_right = 1102.0
+offset_bottom = 524.0
+texture = ExtResource("12_7oqvy")
+expand_mode = 1

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ck0ml51e6okcn"
+path="res://.godot/imported/261 Bulblax Kingdom (Olimar, Carrying) .mp3-38221e80300a1d95aad322aa12264efb.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/261 Bulblax Kingdom (Olimar, Carrying) .mp3"
+dest_files=["res://.godot/imported/261 Bulblax Kingdom (Olimar, Carrying) .mp3-38221e80300a1d95aad322aa12264efb.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

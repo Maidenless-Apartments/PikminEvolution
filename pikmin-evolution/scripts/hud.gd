@@ -4,6 +4,7 @@ extends Control
 @onready var time_label: Label = $TimeLabel
 @onready var score_label: Label = $ScoreLabel
 @onready var stage_label: Label = $StageLabel
+@onready var fps_label: Label = $FPSLabel
 @onready var message_label: Label = $MessageLabel
 @onready var eat_icon: TextureRect = $iconsContainer/eatIcon
 @onready var shake_icon: TextureRect = $iconsContainer/shakeIcon
@@ -21,7 +22,7 @@ extends Control
 @onready var game_manager = $"../../gameManager"
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	player.hunger_changed.connect(_on_hunger_changed)
 	player.pikmin_eaten_changed.connect(_on_pikmin_eaten_changed)
 	player.stage_changed.connect(_on_stage_changed)
@@ -30,6 +31,7 @@ func _ready() -> void:
 	player.roaring.connect(_on_roaring_changed)
 	game_manager.time_changed.connect(_on_time_changed)
 	game_manager.game_over.connect(_on_game_over)
+	SettingsManager.debugger_changed.connect(_on_debugger_changed)
 	play_again_button.pressed.connect(_on_play_again_pressed)
 	next_level_button.pressed.connect(_on_next_level_pressed)
 	main_menu_button.pressed.connect(_on_main_menu_pressed)
@@ -39,6 +41,7 @@ func _ready() -> void:
 	roar_icon.self_modulate = Color(0.45, 0.45, 0.45, 1.0)
 	end_game_backdrop.visible = false
 	end_game_panel.visible = false
+	fps_label.visible = false
 
 	for button: Button in [play_again_button, next_level_button, main_menu_button]:
 		button.focus_mode = Control.FOCUS_ALL
@@ -52,6 +55,11 @@ func _ready() -> void:
 	_on_pikmin_eaten_changed(player.pikmin_eaten)
 	_on_stage_changed(player.growth_stage)
 	_on_time_changed(game_manager.time_left)
+	_on_debugger_changed(SettingsManager.debugger_enabled)
+
+func _process(_delta: float) -> void:
+	if fps_label.visible:
+		fps_label.text = "FPS: %d" % Engine.get_frames_per_second()
 
 func _on_hunger_changed(current: float, max_value: float) -> void:
 	hunger_bar.max_value = max_value
@@ -103,6 +111,11 @@ func _on_roaring_changed(value: int) -> void:
 		roar_icon.self_modulate = Color(0.45, 0.45, 0.45, 1.0)
 	else:
 		roar_icon.self_modulate = Color(1,1,1,1)
+
+func _on_debugger_changed(enabled: bool) -> void:
+	fps_label.visible = enabled
+	if enabled:
+		fps_label.text = "FPS: %d" % Engine.get_frames_per_second()
 
 func _on_play_again_pressed() -> void:
 	get_tree().paused = false

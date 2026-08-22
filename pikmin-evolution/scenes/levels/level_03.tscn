@@ -161,6 +161,14 @@ offset_right = 98.0
 offset_bottom = 83.0
 text = "Stage:"
 
+[node name="FPSLabel" type="Label" parent="HUD/Control"]
+layout_mode = 0
+offset_left = 1040.0
+offset_top = 54.0
+offset_right = 1120.0
+offset_bottom = 77.0
+text = "FPS: 0"
+
 [node name="MessageLabel" type="Label" parent="HUD/Control"]
 layout_mode = 0
 offset_left = 401.0
